@@ -10,6 +10,7 @@ import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePostsRepository
 import me.toptas.rssconverter.RssConverterFactory
 import me.toptas.rssconverter.RssFeed
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.doAsyncResult
 import org.jsoup.Jsoup
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,15 +18,16 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import java.lang.Exception
 
-class AlgerimmoWebSite(val realEstatePostsRepository: RealEstatePostsRepository) : RealEstateWebSite {
+class AlgerimmoWebSite() : RealEstateWebSite {
+
 
     companion object{
         private const val URL = "https://www.algerimmo.com/"
     }
 
-    override fun getRealEstatePosts(): List<RealEstatePost> {
+    override fun getRealEstatePosts(consumer: RealEstatePostsConsumer) {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://www.algerimmo.com/")
+            .baseUrl(URL)
             .addConverterFactory(RssConverterFactory.create())
             .build()
 
@@ -42,9 +44,8 @@ class AlgerimmoWebSite(val realEstatePostsRepository: RealEstatePostsRepository)
                         Log.e("Error","load failed")
                         return
                     }
-                    doAsync {
+                    doAsyncResult {
                         for(item in items){
-                            val description = item.description
                             val page = Jsoup.connect(item.link).get()
                             Log.d("Algerimmo",item.link)
                             val images = page.select(".picture a")
@@ -52,6 +53,8 @@ class AlgerimmoWebSite(val realEstatePostsRepository: RealEstatePostsRepository)
                             for (image in images){
                                pictures.add(image.absUrl("href"))
                             }
+
+                            val description = page.select(".description p").text()
 
                             val elements = page.select(".info > ul li")
                             val info = ArrayList<String>()
@@ -78,9 +81,9 @@ class AlgerimmoWebSite(val realEstatePostsRepository: RealEstatePostsRepository)
                             )
                             posts.add(post)
                         }
-                        realEstatePostsRepository.posts.postValue(posts)
+                        //realEstatePostsRepository.posts.postValue(posts)
+                        consumer.addPosts(posts)
                     }
-
                 }
 
                 override fun onFailure(call: Call<RssFeed>, t: Throwable) {
@@ -88,7 +91,5 @@ class AlgerimmoWebSite(val realEstatePostsRepository: RealEstatePostsRepository)
                     throw Exception(t.message)
                 }
             })
-        Log.d("Algerimmo/Return",posts.size.toString())
-        return posts
     }
 }

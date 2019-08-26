@@ -13,7 +13,7 @@ data class RealEstatePost(
     var postId : Int = 0
     var category : String? = null
     var type : String? = null
-    var surface : Float? = null
-    var price : Float? = null
+    var surface : String? = null
+    var price : String? = null
 
 }

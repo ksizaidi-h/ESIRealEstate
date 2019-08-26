@@ -25,7 +25,7 @@ class HomeAdapter : ListAdapter<RealEstatePost, HomeAdapter.PostsViewHolder>(DIF
     companion object{
         private val DIFF_CALLBACK  = object : DiffUtil.ItemCallback<RealEstatePost>(){
             override fun areItemsTheSame(oldItem: RealEstatePost, newItem: RealEstatePost): Boolean {
-                return oldItem.postId  == newItem.postId
+                return oldItem.link  == newItem.link
             }
 
             override fun areContentsTheSame(oldItem: RealEstatePost, newItem: RealEstatePost): Boolean {
@@ -36,13 +36,23 @@ class HomeAdapter : ListAdapter<RealEstatePost, HomeAdapter.PostsViewHolder>(DIF
     }
 
 
+
+
     class PostsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         fun bind(item : RealEstatePost) = with(itemView){
             tv_description_post_item.text = item.description
-            if (item.pictures.size > 0) {
-                Picasso.get().load(item.pictures[0]).into(iv_post_item)
+            if(item.pictures.size > 0) {
+                Picasso
+                    .get()
+                    .load(item.pictures[0])
+                    .fit()
+                    .into(iv_post_item)
             }else{
-                //TODO
+                Picasso
+                    .get()
+                    .load(R.drawable.no_images)
+                    .fit()
+                    .into(iv_post_item)
             }
         }
     }

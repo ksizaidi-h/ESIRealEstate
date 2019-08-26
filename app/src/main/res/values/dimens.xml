@@ -2,4 +2,6 @@
 <resources>
     <dimen name="cardPadding">10dp</dimen>
     <dimen name="cardMargin">8dp</dimen>
+    <dimen name="real_estate_picture_width">300dp</dimen>
+    <dimen name="real_estate_picture_height">200dp</dimen>
 </resources>

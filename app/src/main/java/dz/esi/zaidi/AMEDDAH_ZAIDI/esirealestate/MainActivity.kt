@@ -39,7 +39,12 @@ class MainActivity : AppCompatActivity() {
         rv_home.adapter = adapter
 
         homeViewModel = ViewModelProviders.of(this).get(HomeViewMode :: class.java)
-        homeViewModel.posts.observe(this, Observer<List<RealEstatePost>> {posts -> adapter.submitList(posts)  })
+        homeViewModel.posts.observe(this, Observer<List<RealEstatePost>> {posts -> run{
+            adapter.submitList(posts)
+            for(post in posts) {
+                Log.d("MainActivity",post.link)
+            }
+        }  })
 
 
 //        doAsync {

@@ -5,17 +5,15 @@ import android.util.Log
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.Localisation
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePost
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePoster
-import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.doAsyncResult
 import org.jetbrains.anko.uiThread
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import java.io.IOException
+import java.net.URL
 
 class AlgerieAnnonceWebsite : RealEstateWebSite {
 
     companion object{
-        private const val URL = "http://www.annonce-algerie.com/"
+        private const val baseUrl = "http://www.annonce-algerie.com/"
         private const val TAG = "AAW"
     }
 
@@ -28,8 +26,9 @@ class AlgerieAnnonceWebsite : RealEstateWebSite {
         doAsyncResult{
             val posts = ArrayList<RealEstatePost>()
             val connection = Jsoup
-                .connect(URL + "AnnoncesImmobilier.asp")
+                .connect(baseUrl + "AnnoncesImmobilier.asp")
                 .execute()
+                .charset("ISO-8859-15")
 
             val page = Jsoup.parse(connection.body())
 
@@ -39,14 +38,14 @@ class AlgerieAnnonceWebsite : RealEstateWebSite {
                 val values = info.select("td:nth-child(2n)")
                 val category = values[categoryRange].text()
                 val type = values[typeRage].text()
-                val link = URL + values[linkRange].select("a").attr("href")
+                val link = baseUrl + values[linkRange].select("a").attr("href")
                 val price = values[priceRage].text()
 
                 // Inside post page
-
                 val insidePostExecution = Jsoup
                     .connect(link)
                     .execute()
+                    .charset("ISO-8859-15")
                 val insidePostPage = Jsoup.parse(insidePostExecution.body())
 
                 // Retrieve poster
@@ -97,7 +96,7 @@ class AlgerieAnnonceWebsite : RealEstateWebSite {
                 val pictures = insidePostPage.select("img.PhotoMin1")
                 val picturesURLs = ArrayList<String>()
                 for(picture in pictures){
-                    picturesURLs.add(URL + picture.attr("src"))
+                    picturesURLs.add(baseUrl + picture.attr("src"))
                 }
 
                 val localisation = Localisation(town, city)
@@ -124,7 +123,7 @@ class AlgerieAnnonceWebsite : RealEstateWebSite {
 
         val linksList = ArrayList<String>()
         val connection = Jsoup
-            .connect(URL + "AnnoncesImmobilier.asp")
+            .connect(baseUrl + "AnnoncesImmobilier.asp")
             .execute()
 
         Log.i(TAG,"connection sucessful")
@@ -133,7 +132,7 @@ class AlgerieAnnonceWebsite : RealEstateWebSite {
 
         val links = page.select(".Tableau1 td:nth-child(8) a")
         for (link in links){
-            linksList.add(URL + link.attr("href"))
+            linksList.add(baseUrl + link.attr("href"))
         }
         return linksList
     }

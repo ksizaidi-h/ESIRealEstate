@@ -41,6 +41,8 @@ class HomeAdapter : ListAdapter<RealEstatePost, HomeAdapter.PostsViewHolder>(DIF
     class PostsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         fun bind(item : RealEstatePost) = with(itemView){
             tv_description_post_item.text = item.description
+            tv_post_item_price.text = item.price
+            tv_post_item_wilaya.text = item.wilaya
             if(item.pictures.size > 0) {
                 Picasso
                     .get()

@@ -2,4 +2,5 @@
     <string name="app_name">ESI Real Estate</string>
 
     <string name="post_item_picture_content_description">A picture of the real estate</string>
+    <string name="no_price">Le prix n\'a pas été mentionné</string>
 </resources>

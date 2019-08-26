@@ -2,6 +2,8 @@
 <resources>
     <dimen name="cardPadding">10dp</dimen>
     <dimen name="cardMargin">8dp</dimen>
-    <dimen name="real_estate_picture_width">300dp</dimen>
-    <dimen name="real_estate_picture_height">200dp</dimen>
+    <dimen name="real_estate_picture_width">350dp</dimen>
+    <dimen name="real_estate_picture_height">300dp</dimen>
+    <dimen name="price_post_item_text_size">20sp</dimen>
+    <dimen name="wilaya_text_size">18sp</dimen>
 </resources>

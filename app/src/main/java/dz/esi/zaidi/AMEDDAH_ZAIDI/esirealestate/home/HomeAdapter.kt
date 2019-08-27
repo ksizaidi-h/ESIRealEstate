@@ -1,5 +1,6 @@
 package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePost
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.PostDetails
 import kotlinx.android.synthetic.main.real_estate_post_item.view.*
 
 class HomeAdapter : ListAdapter<RealEstatePost, HomeAdapter.PostsViewHolder>(DIFF_CALLBACK){
@@ -55,6 +57,12 @@ class HomeAdapter : ListAdapter<RealEstatePost, HomeAdapter.PostsViewHolder>(DIF
                     .load(R.drawable.no_images)
                     .fit()
                     .into(iv_post_item)
+            }
+
+            setOnClickListener{
+                val intent = Intent(context, PostDetails::class.java)
+                intent.putCharSequenceArrayListExtra(PostDetails.PICTURES, ArrayList(item.pictures))
+                context.startActivity(intent)
             }
         }
     }

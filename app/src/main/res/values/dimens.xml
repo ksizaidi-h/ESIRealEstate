@@ -6,4 +6,7 @@
     <dimen name="real_estate_picture_height">300dp</dimen>
     <dimen name="price_post_item_text_size">20sp</dimen>
     <dimen name="wilaya_text_size">18sp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

@@ -50,12 +50,13 @@ dependencies {
     // For Kotlin use kapt instead of annotationProcessor
 
     implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version" // For Kotlin use kapt instead of annotationProcessor
+    kapt "androidx.room:room-compiler:$room_version"
+    // For Kotlin use kapt instead of annotationProcessor
 
     //Anko
     implementation "org.jetbrains.anko:anko-commons:0.10.4"
 
-  //Retrofit
+    //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.1'
 
     //Gson converter
@@ -78,7 +79,6 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.android.support:design:28.0.0'
-
 
 
 }

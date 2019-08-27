@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".post_details.PostDetails">
+        <FrameLayout
+                android:id="@+id/fragment_image_slider"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/real_estate_picture_height"/>
+</LinearLayout>

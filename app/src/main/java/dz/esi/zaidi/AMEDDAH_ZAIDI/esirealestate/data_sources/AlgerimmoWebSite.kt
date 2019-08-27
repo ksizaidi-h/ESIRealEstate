@@ -44,7 +44,7 @@ class AlgerimmoWebSite() : RealEstateWebSite {
                         Log.e("Error","load failed")
                         return
                     }
-                    doAsyncResult {
+                    doAsync {
                         for(item in items){
                             val page = Jsoup.connect(item.link).get()
                             Log.d("Algerimmo",item.link)

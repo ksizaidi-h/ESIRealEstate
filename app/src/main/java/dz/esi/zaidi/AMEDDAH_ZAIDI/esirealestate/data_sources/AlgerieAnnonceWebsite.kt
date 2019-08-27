@@ -5,6 +5,7 @@ import android.util.Log
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.Localisation
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePost
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePoster
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.doAsyncResult
 import org.jetbrains.anko.uiThread
 import org.jsoup.Jsoup
@@ -23,7 +24,7 @@ class AlgerieAnnonceWebsite : RealEstateWebSite {
         val typeRage = 2
         val linkRange = 3
         val priceRage = 4
-        doAsyncResult{
+        doAsync{
             val posts = ArrayList<RealEstatePost>()
             val connection = Jsoup
                 .connect(baseUrl + "AnnoncesImmobilier.asp")
@@ -112,28 +113,10 @@ class AlgerieAnnonceWebsite : RealEstateWebSite {
 
                 posts.add(post)
             }
-           uiThread {
                consumer.addPosts(posts)
-           }
+
         }
 
     }
 
-    private fun getLinks() : List<String>{
-
-        val linksList = ArrayList<String>()
-        val connection = Jsoup
-            .connect(baseUrl + "AnnoncesImmobilier.asp")
-            .execute()
-
-        Log.i(TAG,"connection sucessful")
-
-        val page = Jsoup.parse(connection.body())
-
-        val links = page.select(".Tableau1 td:nth-child(8) a")
-        for (link in links){
-            linksList.add(baseUrl + link.attr("href"))
-        }
-        return linksList
-    }
 }

@@ -24,7 +24,7 @@ class RealEstatePostsRepository : RealEstatePostsConsumer{
     }
 
     private val postsSources = arrayOf<RealEstateWebSite>(
-        AlgerimmoWebSite(), AlgerieAnnonceWebsite()
+        /*AlgerimmoWebSite(),*/ AlgerieAnnonceWebsite()
     )
 
     var posts = MutableLiveData<List<RealEstatePost>>()

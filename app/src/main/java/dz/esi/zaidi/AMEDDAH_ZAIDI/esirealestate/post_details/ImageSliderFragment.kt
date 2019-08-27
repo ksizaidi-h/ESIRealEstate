@@ -39,4 +39,6 @@ class ImageSliderFragment : Fragment() {
         v.tabDots.setupWithViewPager(v.view_pager,true)
         return v
     }
+
+
 }

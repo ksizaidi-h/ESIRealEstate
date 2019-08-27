@@ -3,4 +3,7 @@
 
     <string name="post_item_picture_content_description">A picture of the real estate</string>
     <string name="no_price">Le prix n\'a pas été mentionné</string>
+    <string name="home">Accueil</string>
+    <string name="favorites">Favories</string>
+    <string name="notifications">Notifications</string>
 </resources>

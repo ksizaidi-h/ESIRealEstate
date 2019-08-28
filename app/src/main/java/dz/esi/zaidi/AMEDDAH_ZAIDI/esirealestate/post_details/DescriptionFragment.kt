@@ -54,7 +54,7 @@ class DescriptionFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val v = inflater.inflate(R.layout.post_description_fragment,container,false)
+        val v = inflater.inflate(R.layout.post_description_fragment,container, false)
 
         var wilaya = ""
         var commune = ""

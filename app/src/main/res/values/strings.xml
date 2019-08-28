@@ -8,11 +8,22 @@
     <string name="notifications">Notifications</string>
     <string name="title_activity_post_details">PostDetails</string>
 
-    <string name="location" ><b>Location : </b> %1$s > %2$s > %3$s</string>
-    <string name="category"><b>Category : </b>%1$s > %2$s</string>
-    <string name="price"><b>Prix : </b>%1$s</string>
-    <string name="surface"><b>Surface : </b>%1$s</string>
-    <string name="description"><b>Description : </b>%1$s</string>
+    <string name="post_item_price">%1$s DA</string>
+
+    <string name="localisation_label">Location : </string>
+    <string name="location" > %1$s > %2$s > %3$s</string>
+
+    <string name="category_lable">Category : </string>
+    <string name="category"> %1$s > %2$s</string>
+
+    <string name="price_label">Prix : </string>
+    <string name="price"> %1$s DA</string>
+
+    <string name="surface_lable">Surface : </string>
+    <string name="surface"> %1$s</string>
+
+    <string name="description_label">Description :</string>
+    <string name="description"> %1$s</string>
 
     <string name="large_text">
         "Material is the metaphor.\n\n"

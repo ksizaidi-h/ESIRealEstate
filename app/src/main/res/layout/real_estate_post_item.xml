@@ -33,6 +33,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
+                        android:layout_marginBottom="4dp"
                         android:text="@string/no_price"
                         android:textSize="@dimen/price_post_item_text_size"
                         android:textColor="@color/price_text_color"

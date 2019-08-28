@@ -17,4 +17,16 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="TextLabel">
+        <item name="android:textColor">@color/default_text_color</item>
+        <item name="android:textSize">@dimen/default_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginTop">@dimen/post_description_info_spacing</item>
+    </style>
+
+    <style name="PriceText" parent="TextLabel">
+        <item name="android:textColor">@color/post_details_price_color</item>
+        <item name="android:textSize">@dimen/post_details_price_size</item>
+    </style>
+
 </resources>

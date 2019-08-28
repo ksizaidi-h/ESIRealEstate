@@ -5,6 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -32,17 +36,39 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity() {
 
     private lateinit var homeViewModel : HomeViewMode
+    private lateinit var drawer: DrawerLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
+        setSupportActionBar(toolbar)
 
+        drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
+        val toggle = ActionBarDrawerToggle(
+            this,
+            drawer,
+            toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+
+        drawer.addDrawerListener(toggle)
+        toggle.syncState()
 
         if(savedInstanceState == null){
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.fragment_container, HomeFragment())
                 .commit()
+        }
+    }
+
+    override fun onBackPressed() {
+        if(drawer.isDrawerOpen(GravityCompat.START)){
+            drawer.closeDrawer(GravityCompat.START)
+        }else{
+            super.onBackPressed()
         }
     }
 

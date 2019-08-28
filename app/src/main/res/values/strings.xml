@@ -7,6 +7,13 @@
     <string name="favorites">Favories</string>
     <string name="notifications">Notifications</string>
     <string name="title_activity_post_details">PostDetails</string>
+
+    <string name="location" ><b>Location : </b> %1$s > %2$s > %3$s</string>
+    <string name="category"><b>Category : </b>%1$s > %2$s</string>
+    <string name="price"><b>Prix : </b>%1$s</string>
+    <string name="surface"><b>Surface : </b>%1$s</string>
+    <string name="description"><b>Description : </b>%1$s</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

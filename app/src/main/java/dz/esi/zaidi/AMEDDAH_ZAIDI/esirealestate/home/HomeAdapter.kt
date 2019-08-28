@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePost
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.DescriptionFragment
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.ImageSliderFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.PostDetails
 import kotlinx.android.synthetic.main.real_estate_post_item.view.*
 
@@ -61,7 +63,15 @@ class HomeAdapter : ListAdapter<RealEstatePost, HomeAdapter.PostsViewHolder>(DIF
 
             setOnClickListener{
                 val intent = Intent(context, PostDetails::class.java)
-                intent.putCharSequenceArrayListExtra(PostDetails.PICTURES, ArrayList(item.pictures))
+                intent.putCharSequenceArrayListExtra(ImageSliderFragment.PICTURES, ArrayList(item.pictures))
+                intent.putExtra(DescriptionFragment.DESCRIPTION, item.description)
+                intent.putExtra(DescriptionFragment.TYPE, item.type)
+                intent.putExtra(DescriptionFragment.CATEGORY, item.category)
+                intent.putExtra(DescriptionFragment.SURFACE, item.surface)
+                intent.putExtra(DescriptionFragment.PRICE, item.price)
+                intent.putExtra(DescriptionFragment.WILAYA, item.wilaya)
+                intent.putExtra(DescriptionFragment.COMMUNE, item.commune)
+                intent.putExtra(DescriptionFragment.ADDRESS, item.address)
                 context.startActivity(intent)
             }
         }

@@ -17,6 +17,10 @@
             android:id="@+id/tv_category_post_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+    <TextView
+            android:id="@+id/tv_surface_post_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     <TextView
             android:id="@+id/tv_description_post_details"

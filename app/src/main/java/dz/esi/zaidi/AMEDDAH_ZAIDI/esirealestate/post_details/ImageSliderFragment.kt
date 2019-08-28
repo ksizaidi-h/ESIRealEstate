@@ -12,7 +12,7 @@ class ImageSliderFragment : Fragment() {
 
     companion object {
 
-        private const val PICTURES = "dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.posts_details.PICTURES"
+        const val PICTURES = "dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.posts_details.ImageSliderFragment.PICTURES"
 
         fun newInstance(pictures : ArrayList<String>) : ImageSliderFragment{
             val fragment = ImageSliderFragment()

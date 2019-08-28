@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+    <ToggleButton
+            android:layout_width="@dimen/action_button_size"
+            android:layout_height="@dimen/action_button_size"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/favorite_toggle_selector"
+            android:textOff=""
+            android:textOn="" />
+
+    <ImageButton
+            android:id="@+id/btn_visit_link"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="@dimen/action_button_size"
+            android:layout_height="@dimen/action_button_size"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:contentDescription="@string/open_in_browser"
+            android:src="@drawable/ic_open_in_browser_black_24dp" />
+    <ImageButton
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="@dimen/action_button_size"
+            android:layout_height="@dimen/action_button_size"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:contentDescription="@string/open_in_browser"
+            android:src="@drawable/ic_share_black_24dp" />
+
+</LinearLayout>

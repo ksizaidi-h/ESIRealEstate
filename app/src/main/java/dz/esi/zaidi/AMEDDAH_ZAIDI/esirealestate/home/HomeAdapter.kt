@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.ActionsFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePost
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.ContactFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.DescriptionFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.ImageSliderFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.PostDetails
@@ -72,6 +74,8 @@ class HomeAdapter : ListAdapter<RealEstatePost, HomeAdapter.PostsViewHolder>(DIF
                 intent.putExtra(DescriptionFragment.WILAYA, item.wilaya)
                 intent.putExtra(DescriptionFragment.COMMUNE, item.commune)
                 intent.putExtra(DescriptionFragment.ADDRESS, item.address)
+                intent.putExtra(ContactFragment.PHONE,item.phone)
+                intent.putExtra(ActionsFragment.LINK, item.link)
                 context.startActivity(intent)
             }
         }

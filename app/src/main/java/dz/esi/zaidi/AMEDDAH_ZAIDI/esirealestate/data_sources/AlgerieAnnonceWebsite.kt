@@ -51,10 +51,11 @@ class AlgerieAnnonceWebsite : RealEstateWebSite {
 
                 // Retrieve poster
 
-                var phone = insidePostPage.select("td.cellphone").text()
+                var phone = insidePostPage.select("li.cellphone span.da_contact_value").text()
                 if(phone == ""){
-                    phone = insidePostPage.select("td.phone").text()
+                    phone = insidePostPage.select("li.phone span.da_contact_value").text()
                 }
+                Log.d(TAG + "/phone",phone)
 
                 //Retrieve localisation
 

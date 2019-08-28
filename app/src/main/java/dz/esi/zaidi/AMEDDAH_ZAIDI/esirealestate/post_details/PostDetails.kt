@@ -2,6 +2,7 @@ package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.ActionsFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
 
 class PostDetails : AppCompatActivity() {
@@ -35,6 +36,20 @@ class PostDetails : AppCompatActivity() {
             beginTransaction().
             replace(R.id.fragment_post_description_container,descriptionFragment).
             commit()
+
+        val contactFragment = ContactFragment.newInstance(intent.getStringExtra(ContactFragment.PHONE)!!)
+        supportFragmentManager.
+            beginTransaction().
+            replace(R.id.fragment_contact_container,contactFragment).
+            commit()
+
+        val actionsFragment = ActionsFragment.newInstance(intent.getStringExtra(ActionsFragment.LINK)!!)
+        supportFragmentManager.
+            beginTransaction().
+            replace(R.id.actions_container,actionsFragment).
+            commit()
+
+
 
     }
 }

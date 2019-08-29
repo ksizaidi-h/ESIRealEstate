@@ -2,12 +2,15 @@ package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.ActionsFragment
+import androidx.lifecycle.ViewModelProviders
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.Localisation
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePost
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePoster
 
 class PostDetailsActivity : AppCompatActivity() {
 
-
+    private lateinit var postsDetailsViewModel: PostDetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,20 +19,33 @@ class PostDetailsActivity : AppCompatActivity() {
         val pictures = intent.getStringArrayListExtra(ImageSliderFragment.PICTURES)
         val imageSliderFragment = ImageSliderFragment.newInstance(pictures)
 
+        postsDetailsViewModel = ViewModelProviders.of(this).get(PostDetailsViewModel::class.java)
+
         supportFragmentManager.
             beginTransaction().
             replace(R.id.fragment_image_slider,imageSliderFragment).
             commit()
 
+        val wilaya = intent.getStringExtra(DescriptionFragment.WILAYA)!!
+        val commune = intent.getStringExtra(DescriptionFragment.COMMUNE)!!
+        val address = intent.getStringExtra(DescriptionFragment.ADDRESS)!!
+        val category = intent.getStringExtra(DescriptionFragment.CATEGORY)!!
+        val type = intent.getStringExtra(DescriptionFragment.TYPE)!!
+        val price = intent.getStringExtra(DescriptionFragment.PRICE)!!
+        val surface = intent.getStringExtra(DescriptionFragment.SURFACE)!!
+        val description = intent.getStringExtra(DescriptionFragment.DESCRIPTION)!!
+
+
+
         val descriptionFragment = DescriptionFragment.newInstance(
-            intent.getStringExtra(DescriptionFragment.WILAYA)!!,
-            intent.getStringExtra(DescriptionFragment.COMMUNE)!!,
-            intent.getStringExtra(DescriptionFragment.ADDRESS)!!,
-            intent.getStringExtra(DescriptionFragment.CATEGORY)!!,
-            intent.getStringExtra(DescriptionFragment.TYPE)!!,
-            intent.getStringExtra(DescriptionFragment.PRICE)!!,
-            intent.getStringExtra(DescriptionFragment.SURFACE)!!,
-            intent.getStringExtra(DescriptionFragment.DESCRIPTION)!!
+            wilaya,
+            commune,
+            address,
+            category,
+            type,
+            price,
+            surface,
+            description
         )
 
         supportFragmentManager.
@@ -37,19 +53,31 @@ class PostDetailsActivity : AppCompatActivity() {
             replace(R.id.fragment_post_description_container,descriptionFragment).
             commit()
 
-        val contactFragment = ContactFragment.newInstance(intent.getStringExtra(ContactFragment.PHONE)!!)
+        val phone = intent.getStringExtra(ContactFragment.PHONE)!!
+        val contactFragment = ContactFragment.newInstance(phone)
         supportFragmentManager.
             beginTransaction().
             replace(R.id.fragment_contact_container,contactFragment).
             commit()
 
-        val actionsFragment = ActionsFragment.newInstance(intent.getStringExtra(ActionsFragment.LINK)!!)
+        val link = intent.getStringExtra(ActionsFragment.LINK)!!
+        val actionsFragment = ActionsFragment.newInstance(link)
         supportFragmentManager.
             beginTransaction().
             replace(R.id.actions_container,actionsFragment).
             commit()
 
+        val localisation = Localisation(wilaya, commune)
+        localisation.adresse = address
 
+        val poster = RealEstatePoster(null, phone)
 
+        val post = RealEstatePost(description,localisation,poster,pictures,link)
+        post.category = category
+        post.type = type
+        post.price = price
+        post.surface = surface
+
+        postsDetailsViewModel.newInstanceCurrentPost = post
     }
 }

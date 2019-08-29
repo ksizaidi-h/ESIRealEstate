@@ -19,4 +19,7 @@ interface RealEstatePostDAO {
     @Query("SELECT * FROM real_estate_posts WHERE category = :category")
     fun getPostsByCategory(category : String) : LiveData<List<RealEstatePost>>
 
+    @Query("SELECT * FROM real_estate_posts WHERE link = :link")
+    fun getPostByLink(link : String) : RealEstatePost?
+
 }

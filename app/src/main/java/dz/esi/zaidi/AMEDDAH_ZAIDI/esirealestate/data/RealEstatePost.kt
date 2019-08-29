@@ -38,4 +38,7 @@ data class RealEstatePost(
     var surface : String? = null
     var price : String? = null
 
+    override fun toString(): String {
+        return "$postId : $localisation"
+    }
 }

@@ -6,6 +6,7 @@
         android:gravity="center">
 
     <ToggleButton
+            android:id="@+id/btn_favorites"
             android:layout_width="@dimen/action_button_size"
             android:layout_height="@dimen/action_button_size"
             android:layout_marginEnd="20dp"

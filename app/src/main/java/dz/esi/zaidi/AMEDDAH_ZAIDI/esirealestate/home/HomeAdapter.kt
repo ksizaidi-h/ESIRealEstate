@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.ActionsFragment
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.ActionsFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePost
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.ContactFragment

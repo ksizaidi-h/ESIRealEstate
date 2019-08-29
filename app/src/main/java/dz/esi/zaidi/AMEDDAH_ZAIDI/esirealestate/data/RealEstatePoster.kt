@@ -4,6 +4,6 @@ data class RealEstatePoster(
     val fullName : String?,
     val phoneNumber : String
 ){
-    val posterId : Int = 0
-    val email : String? = null
+    var posterId : Int = 0
+    var email : String? = null
 }

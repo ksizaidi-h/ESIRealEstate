@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".post_details.PostDetails"
+        tools:context=".post_details.PostDetailsActivity"
         android:background="#fff">
         <FrameLayout
                 android:id="@+id/fragment_image_slider"

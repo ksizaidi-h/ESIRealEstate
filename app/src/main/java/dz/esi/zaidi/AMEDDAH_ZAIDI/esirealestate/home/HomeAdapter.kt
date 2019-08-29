@@ -14,7 +14,7 @@ import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePost
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.ContactFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.DescriptionFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.ImageSliderFragment
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.PostDetails
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.PostDetailsActivity
 import kotlinx.android.synthetic.main.real_estate_post_item.view.*
 
 class HomeAdapter : ListAdapter<RealEstatePost, HomeAdapter.PostsViewHolder>(DIFF_CALLBACK){
@@ -64,7 +64,7 @@ class HomeAdapter : ListAdapter<RealEstatePost, HomeAdapter.PostsViewHolder>(DIF
             }
 
             setOnClickListener{
-                val intent = Intent(context, PostDetails::class.java)
+                val intent = Intent(context, PostDetailsActivity::class.java)
                 intent.putCharSequenceArrayListExtra(ImageSliderFragment.PICTURES, ArrayList(item.pictures))
                 intent.putExtra(DescriptionFragment.DESCRIPTION, item.description)
                 intent.putExtra(DescriptionFragment.TYPE, item.type)

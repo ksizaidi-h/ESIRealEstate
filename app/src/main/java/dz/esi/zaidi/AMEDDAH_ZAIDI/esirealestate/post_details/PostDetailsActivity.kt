@@ -5,7 +5,7 @@ import android.os.Bundle
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.ActionsFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
 
-class PostDetails : AppCompatActivity() {
+class PostDetailsActivity : AppCompatActivity() {
 
 
 

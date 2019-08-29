@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context="dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.PostDetails">
+        tools:context="dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.PostDetailsActivity">
     <item
             android:id="@+id/action_settings"
             android:orderInCategory="100"

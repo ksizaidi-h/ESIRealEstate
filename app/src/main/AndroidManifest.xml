@@ -13,7 +13,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".post_details.PostDetails"
+                android:name=".post_details.PostDetailsActivity"
                 android:label="@string/title_activity_post_details"
                 android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".MainActivity">

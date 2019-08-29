@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:showIn = "navigation_view">
     <group android:checkableBehavior="single">
         <item android:id="@+id/nav_home"
                 android:title="@string/home"
                 android:icon="@drawable/ic_home"/>
         <item android:id="@+id/nav_favorites"
-                android:icon="@drawable/ic_favorite"
                 android:title="@string/favorites">
             <menu>
                 <item android:title="@string/sale"
-                    android:id="@+id/nav_sale"/>
+                    android:id="@+id/nav_sale"
+                        android:icon="@drawable/ic_for_sale"/>
                 <item android:title="@string/nav_location"
-                        android:id="@+id/nav_location"/>
+                        android:id="@+id/nav_location"
+                        android:icon="@drawable/ic_for_rent"/>
                 <item android:title="@string/holiday"
-                        android:id="@+id/nav_holiday"/>
+                        android:id="@+id/nav_holiday"
+                        android:icon="@drawable/ic_holiday"/>
             </menu>
         </item>
         <item android:id="@+id/nav_subscribe"

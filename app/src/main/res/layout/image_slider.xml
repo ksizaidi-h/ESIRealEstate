@@ -11,7 +11,7 @@
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".post_details.PostDetails">
+            tools:context=".post_details.PostDetailsActivity">
 
     </androidx.viewpager.widget.ViewPager>
     <com.google.android.material.tabs.TabLayout

@@ -33,7 +33,8 @@ import retrofit2.Retrofit
 //import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
+
 
     private lateinit var homeViewModel : HomeViewMode
     private lateinit var drawer: DrawerLayout
@@ -43,6 +44,9 @@ class MainActivity : AppCompatActivity() {
 
         val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
         setSupportActionBar(toolbar)
+
+        val navigationView = findViewById<NavigationView>(R.id.drawer_menu)
+        navigationView.setNavigationItemSelectedListener(this)
 
         drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
         val toggle = ActionBarDrawerToggle(
@@ -61,7 +65,15 @@ class MainActivity : AppCompatActivity() {
                 .beginTransaction()
                 .replace(R.id.fragment_container, HomeFragment())
                 .commit()
+
+            navigationView.setCheckedItem(R.id.nav_home)
+
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        drawer.closeDrawer(GravityCompat.START)
+        return true
     }
 
     override fun onBackPressed() {

@@ -17,7 +17,7 @@ import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.ImageSliderFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.PostDetailsActivity
 import kotlinx.android.synthetic.main.real_estate_post_item.view.*
 
-class HomeAdapter : ListAdapter<RealEstatePost, HomeAdapter.PostsViewHolder>(DIFF_CALLBACK){
+class PostsAdapter : ListAdapter<RealEstatePost, PostsAdapter.PostsViewHolder>(DIFF_CALLBACK){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostsViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.real_estate_post_item,parent,false)

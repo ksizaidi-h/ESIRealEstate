@@ -60,7 +60,12 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
     }
 
     fun getPostsByCategory(category : String) : LiveData<List<RealEstatePost>>{
-        val posts = realEstatePostDAO.getPostsByCategory(category)
+        doAsyncResult {
+            val posts = realEstatePostDAO.getPostsByCategory(category)
+            uiThread {
+                it.posts.value = posts
+            }
+        }.get()
         return posts
     }
 

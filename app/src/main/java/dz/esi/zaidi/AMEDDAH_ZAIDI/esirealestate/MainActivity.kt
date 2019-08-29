@@ -7,12 +7,11 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.navigation.NavigationView
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.PostsListFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.PostsListViewModel
+
 //import java.util.*
 
 class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
@@ -21,6 +20,8 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     private lateinit var postsListViewModel : PostsListViewModel
     private lateinit var drawer: DrawerLayout
     private lateinit var navigationView : NavigationView
+    private lateinit var postsListFragment: PostsListFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -45,10 +46,12 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         drawer.addDrawerListener(toggle)
         toggle.syncState()
 
+        postsListFragment = PostsListFragment()
+
         if(savedInstanceState == null){
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.fragment_container, PostsListFragment())
+                .replace(R.id.fragment_container, postsListFragment)
                 .commit()
 
             navigationView.setCheckedItem(R.id.nav_home)
@@ -64,16 +67,19 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
             }
             R.id.nav_sale ->{
                 postsListViewModel.getFavoritePosts("Vente")
+                navigationView.setCheckedItem(R.id.nav_sale)
             }
             R.id.nav_location -> {
                 postsListViewModel.getFavoritePosts("Location")
+                navigationView.setCheckedItem(R.id.nav_location)
             }
 
             R.id.nav_holiday -> {
                 postsListViewModel.getFavoritePosts("Location vacance")
+                navigationView.setCheckedItem(R.id.nav_holiday)
             }
         }
-        navigationView.setCheckedItem(item.itemId)
+
         drawer.closeDrawer(GravityCompat.START)
         return true
     }
@@ -86,23 +92,5 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         }
     }
 
-    private val navListener = object: NavigationView.OnNavigationItemSelectedListener{
-        override fun onNavigationItemSelected(item: MenuItem): Boolean {
-            var selectedFragment : Fragment? = null
 
-            when(item.itemId){
-                R.id.nav_home -> {
-                    selectedFragment = PostsListFragment()
-                }
-
-
-            }
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_container, selectedFragment!!)
-                .commit()
-            return true
-        }
-
-    }
 }

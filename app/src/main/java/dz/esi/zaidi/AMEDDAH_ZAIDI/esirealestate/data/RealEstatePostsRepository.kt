@@ -36,6 +36,7 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
     }
 
     fun fetchPosts(){
+        posts.value = ArrayList<RealEstatePost>()
         for(site in postsSources){
             site.getRealEstatePosts(this)
         }
@@ -43,8 +44,7 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
 
 
     override fun addPosts(newPosts: List<RealEstatePost>) {
-        postsData.addAll(newPosts)
-        posts.postValue(postsData)
+        posts.value = newPosts
     }
 
     fun insertRealEstatePost(post : RealEstatePost){
@@ -74,7 +74,6 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
         doAsyncResult {
             post = realEstatePostDAO.getPostByLink(link)
             uiThread {
-
             }
         }.get()
         Log.d("getPostByLink", post.toString())

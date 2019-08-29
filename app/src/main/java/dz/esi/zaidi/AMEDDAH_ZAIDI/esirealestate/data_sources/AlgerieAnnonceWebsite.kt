@@ -114,7 +114,9 @@ class AlgerieAnnonceWebsite : RealEstateWebSite {
 
                 posts.add(post)
             }
-               consumer.addPosts(posts)
+            uiThread {
+                consumer.addPosts(posts)
+            }
 
         }
 

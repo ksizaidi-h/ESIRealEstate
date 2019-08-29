@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.posts_list_fragment.view.*
 
 class PostsListFragment : Fragment() {
 
+    private lateinit var adapter : PostsAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -24,15 +26,20 @@ class PostsListFragment : Fragment() {
         v.rv_home.layoutManager = LinearLayoutManager(context)
         v.rv_home.setHasFixedSize(false)
 
-        val adapter = PostsAdapter()
+        adapter = PostsAdapter()
 
         v.rv_home.adapter = adapter
 
+
+
+        return v
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
         val homeViewModel = ViewModelProviders.of(activity!!).get(PostsListViewModel :: class.java)
         homeViewModel.posts.observe(this, Observer<List<RealEstatePost>> { posts -> run{
             adapter.submitList(posts)
         }  })
-
-        return v
+        super.onActivityCreated(savedInstanceState)
     }
 }

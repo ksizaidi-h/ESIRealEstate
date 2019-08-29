@@ -35,7 +35,7 @@ class PostsAdapter : ListAdapter<RealEstatePost, PostsAdapter.PostsViewHolder>(D
             }
 
             override fun areContentsTheSame(oldItem: RealEstatePost, newItem: RealEstatePost): Boolean {
-                return oldItem == newItem
+                return oldItem.link == newItem.link
             }
 
         }

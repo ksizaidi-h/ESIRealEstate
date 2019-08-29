@@ -67,19 +67,19 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
             }
             R.id.nav_sale ->{
                 postsListViewModel.getFavoritePosts("Vente")
-                navigationView.setCheckedItem(R.id.nav_sale)
+//                navigationView.setCheckedItem(R.id.nav_sale)
             }
             R.id.nav_location -> {
                 postsListViewModel.getFavoritePosts("Location")
-                navigationView.setCheckedItem(R.id.nav_location)
+//                navigationView.setCheckedItem(R.id.nav_location)
             }
 
             R.id.nav_holiday -> {
                 postsListViewModel.getFavoritePosts("Location vacance")
-                navigationView.setCheckedItem(R.id.nav_holiday)
+//                navigationView.setCheckedItem(R.id.nav_holiday)
             }
         }
-
+        navigationView.setCheckedItem(item.itemId)
         drawer.closeDrawer(GravityCompat.START)
         return true
     }

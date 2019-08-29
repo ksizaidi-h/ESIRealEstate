@@ -7,18 +7,15 @@ import androidx.lifecycle.MutableLiveData
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.DataBase.RealEstateDatabase
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.DataBase.RealEstatePostDAO
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data_sources.AlgerieAnnonceWebsite
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data_sources.AlgerimmoWebSite
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data_sources.RealEstatePostsConsumer
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data_sources.RealEstateWebSite
-import okhttp3.internal.notify
-import okhttp3.internal.notifyAll
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.doAsyncResult
 import org.jetbrains.anko.uiThread
 
 class RealEstatePostsRepository(application: Application) : RealEstatePostsConsumer{
 
-    private val postsData : MutableList<RealEstatePost>
+    private val postsCache : MutableList<RealEstatePost>
     private lateinit var realEstatePostDAO : RealEstatePostDAO
 
     private val postsSources = arrayOf<RealEstateWebSite>(
@@ -31,20 +28,25 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
         if(database != null){
             realEstatePostDAO = database.realEstatePostDao()
         }
-        postsData = ArrayList<RealEstatePost>()
+        postsCache = ArrayList<RealEstatePost>()
 
     }
 
     fun fetchPosts(){
-        posts.value = ArrayList<RealEstatePost>()
-        for(site in postsSources){
-            site.getRealEstatePosts(this)
+        if(posts.value == null){
+            posts.value = ArrayList<RealEstatePost>()
+            for(site in postsSources){
+                site.getRealEstatePosts(this)
+            }
+        }else{
+            posts.value = postsCache
         }
     }
 
 
     override fun addPosts(newPosts: List<RealEstatePost>) {
         posts.value = newPosts
+        postsCache.addAll(posts.value!!)
     }
 
     fun insertRealEstatePost(post : RealEstatePost){

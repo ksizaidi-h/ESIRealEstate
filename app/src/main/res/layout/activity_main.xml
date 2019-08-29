@@ -33,5 +33,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             app:menu="@menu/drawer_menu"
-            android:foregroundGravity="left"/>
+            android:foregroundGravity="left"
+            app:headerLayout="@layout/nav_header"/>
 </androidx.drawerlayout.widget.DrawerLayout>

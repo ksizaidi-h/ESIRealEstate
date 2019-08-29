@@ -6,22 +6,26 @@
         <item android:id="@+id/nav_home"
                 android:title="@string/home"
                 android:icon="@drawable/ic_home"/>
-        <item android:id="@+id/nav_favorites"
-                android:title="@string/favorites">
-            <menu>
-                <item android:title="@string/sale"
-                    android:id="@+id/nav_sale"
-                        android:icon="@drawable/ic_for_sale"/>
-                <item android:title="@string/nav_location"
-                        android:id="@+id/nav_location"
-                        android:icon="@drawable/ic_for_rent"/>
-                <item android:title="@string/holiday"
-                        android:id="@+id/nav_holiday"
-                        android:icon="@drawable/ic_holiday"/>
-            </menu>
-        </item>
         <item android:id="@+id/nav_subscribe"
             android:title="@string/subscribe"
             android:icon="@drawable/ic_notifications_black_24dp"/>
+
+        <item android:id="@+id/nav_favorites"
+                android:title="@string/favorites">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item android:title="@string/sale"
+                            android:id="@+id/nav_sale"
+                            android:icon="@drawable/ic_for_sale"/>
+                    <item android:title="@string/nav_location"
+                            android:id="@+id/nav_location"
+                            android:icon="@drawable/ic_for_rent"/>
+                    <item android:title="@string/holiday"
+                            android:id="@+id/nav_holiday"
+                            android:icon="@drawable/ic_holiday"/>
+                </group>
+            </menu>
+        </item>
+
     </group>
 </menu>

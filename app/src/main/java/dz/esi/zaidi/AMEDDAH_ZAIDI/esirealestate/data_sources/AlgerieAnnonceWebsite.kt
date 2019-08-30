@@ -27,7 +27,7 @@ class AlgerieAnnonceWebsite : RealEstateWebSite {
         doAsync{
             val posts = ArrayList<RealEstatePost>()
             val connection = Jsoup
-                .connect(baseUrl + "AnnoncesImmobilier.asp")
+                .connect(baseUrl + "/AnnoncesImmobilier.asp?rech_page_num=1&rech_cod_cat=1&rech_cod_rub=&rech_cod_typ=&rech_cod_sou_typ=&rech_cod_pay=DZ&rech_cod_reg=&rech_cod_vil=&rech_cod_loc=&rech_prix_min=&rech_prix_max=&rech_surf_min=&rech_surf_max=&rech_age=&rech_photo=&rech_typ_cli=&rech_order_by=11")
                 .execute()
                 .charset("ISO-8859-15")
 

@@ -1,16 +1,37 @@
 package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate
 
-import android.app.Application
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import android.app.*
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service.WildaSubscriptionServiceReceiver
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.util.Log
+
 
 class EsiRealEstate : Application() {
 
     companion object{
         const val WILAYA_SUBSCRIPTION_CHANNEL = "wilayaSubscription"
+        const val SCHEDULE_WILAYA_SERVICE_ACTION = "dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.SCHEDULE_WILAYA_SERVICE_ACTION"
+        private const val TAG = "EsiRealEstate"
+
+        fun scheduleNotification(context: Context, first : Long){
+            val intent = Intent(context, WildaSubscriptionServiceReceiver::class.java)
+            val pIntent = PendingIntent.getBroadcast(context,
+                WildaSubscriptionServiceReceiver.REQUEST_CODE,
+                intent,
+                PendingIntent.FLAG_CANCEL_CURRENT)
+
+            val alarm = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val firstMillis = first
+            val minutes : Long = 1
+            val interval : Long = 60*1000*minutes
+            alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis + interval,
+                interval, pIntent)
+        }
     }
 
     override fun onCreate() {
@@ -24,6 +45,12 @@ class EsiRealEstate : Application() {
                 getString(R.string.notification_description)
             )
         }
+        val minutes:Long = 1
+        val afterStartInterval :Long = 60*1000*minutes
+        //scheduleNotification(applicationContext, System.currentTimeMillis() + afterStartInterval)
+       // cancelAlarm()
+
+        Log.d(TAG ,"onCreate")
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -42,5 +69,22 @@ class EsiRealEstate : Application() {
             val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             manager.createNotificationChannel(notificationChannel)
 
+    }
+
+
+
+    fun cancelAlarm() {
+        val intent = Intent(applicationContext, WildaSubscriptionServiceReceiver::class.java)
+        val pIntent = PendingIntent.getBroadcast(
+            this, WildaSubscriptionServiceReceiver.REQUEST_CODE,
+            intent, PendingIntent.FLAG_CANCEL_CURRENT
+        )
+        val alarm = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarm.cancel(pIntent)
+    }
+
+    override fun onTerminate() {
+        Log.d(TAG , "onTerminate")
+        super.onTerminate()
     }
 }

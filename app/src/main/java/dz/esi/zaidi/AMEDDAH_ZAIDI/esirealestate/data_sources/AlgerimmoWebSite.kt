@@ -1,16 +1,13 @@
 package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data_sources
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.RssService
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.Localisation
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePost
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePoster
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePostsRepository
 import me.toptas.rssconverter.RssConverterFactory
 import me.toptas.rssconverter.RssFeed
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.doAsyncResult
 import org.jsoup.Jsoup
 import retrofit2.Call
 import retrofit2.Callback
@@ -82,7 +79,7 @@ class AlgerimmoWebSite() : RealEstateWebSite {
                             posts.add(post)
                         }
                         //realEstatePostsRepository.posts.postValue(posts)
-                        consumer.addPosts(posts)
+                        consumer.makeNotifications(posts)
                     }
                 }
 

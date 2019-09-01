@@ -4,5 +4,5 @@ import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePost
 
 interface RealEstatePostsConsumer {
 
-    fun addPosts(newPosts : List<RealEstatePost>)
+    fun makeNotifications(newPosts : List<RealEstatePost>)
 }

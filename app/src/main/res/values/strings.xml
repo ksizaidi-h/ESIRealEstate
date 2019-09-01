@@ -128,4 +128,6 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="notification_description">Etre notifier de l\'ajout d\'une annonce dans les wilya que vous suiver</string>
+    <string name="new_post_notification_title">Nouveau post</string>
+    <string name="new_post_notification_description">Il ya un nouveau post dans la wilaya de %1$s</string>
 </resources>

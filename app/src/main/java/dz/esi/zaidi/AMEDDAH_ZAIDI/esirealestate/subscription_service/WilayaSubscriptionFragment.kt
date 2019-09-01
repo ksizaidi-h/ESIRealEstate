@@ -38,7 +38,7 @@ class WilayaSubscriptionFragment : Fragment(){
         super.onActivityCreated(savedInstanceState)
     }
 
-    val onSubscribeListener = object : WilayaSubscriptionAdapter.OnSubscriptionListener{
+    private val onSubscribeListener = object : WilayaSubscriptionAdapter.OnSubscriptionListener{
         override fun onChecked(wilaya : String) {
             wilayaSubscriptionViewModel.subscribeToWilaya(wilaya )
             Toast.makeText(context, context?.getString(R.string.subscribe_toast,wilaya), Toast.LENGTH_SHORT).show()

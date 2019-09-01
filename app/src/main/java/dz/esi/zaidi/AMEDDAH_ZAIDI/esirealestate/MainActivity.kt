@@ -13,6 +13,7 @@ import com.google.android.material.navigation.NavigationView
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.PostsListFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.PostsListViewModel
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service.WilayaSubscriptionFragment
+import java.util.*
 
 //import java.util.*
 
@@ -23,6 +24,16 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     private lateinit var drawer: DrawerLayout
     private lateinit var navigationView : NavigationView
     private lateinit var postsListFragment: PostsListFragment
+    private val viewStack = Stack<Int>()
+    companion object{
+        private const val HOME = R.id.nav_home
+        private const val SELL = R.id.nav_sale
+        private const val RENT = R.id.nav_location
+        private const val HOLIDAY = R.id.nav_holiday
+        private const val SELL_CATEGORY = "Vente"
+        private const val RENT_CATEGORY = "Location"
+        private const val HOLIDAY_CATEGORY = "Location vacance"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,9 +66,8 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                 .beginTransaction()
                 .replace(R.id.fragment_container, postsListFragment)
                 .commit()
-
+            viewStack.push(HOME)
             navigationView.setCheckedItem(R.id.nav_home)
-
         }
     }
 
@@ -65,29 +75,25 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
 
         when(item.itemId){
             R.id.nav_home -> {
-                postsListViewModel.fetchNewPosts()
-                showFragment(postsListFragment)
+                showView(HOME)
             }
             R.id.nav_sale ->{
-                postsListViewModel.getFavoritePosts("Vente")
-                showFragment(postsListFragment)
-//                navigationView.setCheckedItem(R.id.nav_sale)
+                showView(SELL)
             }
             R.id.nav_location -> {
-                postsListViewModel.getFavoritePosts("Location")
-                showFragment(postsListFragment)
-//                navigationView.setCheckedItem(R.id.nav_location)
+                showView(RENT)
             }
 
             R.id.nav_holiday -> {
-                postsListViewModel.getFavoritePosts("Location vacance")
-                showFragment(postsListFragment)
-//                navigationView.setCheckedItem(R.id.nav_holiday)
+                showView(HOLIDAY)
             }
 
-            R.id.nav_subscribe -> showFragment(WilayaSubscriptionFragment())
+            R.id.nav_subscribe -> {
+                showFragment(WilayaSubscriptionFragment())
+                navigationView.setCheckedItem(item.itemId)
+            }
+
         }
-        navigationView.setCheckedItem(item.itemId)
         drawer.closeDrawer(GravityCompat.START)
         return true
     }
@@ -95,8 +101,10 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     override fun onBackPressed() {
         if(drawer.isDrawerOpen(GravityCompat.START)){
             drawer.closeDrawer(GravityCompat.START)
-        }else{
+        }else if ((viewStack.isEmpty())) {
             super.onBackPressed()
+        }else{
+            showView(viewStack.pop())
         }
     }
 
@@ -105,6 +113,36 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
             .beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
+    }
+
+    private fun showView(view : Int){
+        when(view){
+            HOME -> {
+                postsListViewModel.fetchNewPosts()
+            }
+
+            SELL -> {
+                postsListViewModel.getFavoritePosts(SELL_CATEGORY)
+            }
+
+            RENT -> {
+                postsListViewModel.getFavoritePosts(RENT_CATEGORY)
+            }
+
+            HOLIDAY -> {
+                postsListViewModel.getFavoritePosts(HOLIDAY_CATEGORY)
+            }
+
+        }
+
+        if(!viewStack.isEmpty()){
+            if(viewStack.peek() != view){
+                viewStack.push(view)
+            }
+        }
+        showFragment(postsListFragment)
+        navigationView.setCheckedItem(view)
+
     }
 
 

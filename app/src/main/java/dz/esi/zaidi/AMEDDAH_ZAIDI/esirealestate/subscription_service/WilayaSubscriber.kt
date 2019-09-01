@@ -23,7 +23,6 @@ class WilayaSubscriber(val context: Context) {
        }
 
     fun unsubscribeFromWilaya(wilaya: String){
-        val subscribedWilayas  = getSubScribedWilays()
         subscribedWilayas.remove(subscribedWilayas.first { it.wilayaName == wilaya })
         saveChanges()
     }

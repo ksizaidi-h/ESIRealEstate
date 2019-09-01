@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 
 class WilayaSubscriptionViewModel(application: Application) :AndroidViewModel(application) {
+
     val wilayaSubscriber = WilayaSubscriber(application.applicationContext)
     val subscribedWilayas = wilayaSubscriber.subscribedWilayas.map { it.wilayaName }
 

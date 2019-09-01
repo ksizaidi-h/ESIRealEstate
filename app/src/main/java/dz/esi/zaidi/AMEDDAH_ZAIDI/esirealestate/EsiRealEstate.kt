@@ -47,7 +47,7 @@ class EsiRealEstate : Application() {
         }
         val minutes:Long = 1
         val afterStartInterval :Long = 60*1000*minutes
-        //scheduleNotification(applicationContext, System.currentTimeMillis() + afterStartInterval)
+        scheduleNotification(applicationContext, System.currentTimeMillis() + afterStartInterval)
        // cancelAlarm()
 
         Log.d(TAG ,"onCreate")

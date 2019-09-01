@@ -152,26 +152,31 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
             }
 
             for (link in filteredLinks) {
-                val value = baseUrl + link.attr("href") + "?rech_order_by=11"
+                val wilayaName = link.text().replace("\\([0-9]+\\)".toRegex(),"").trim()
+                Log.d(TAG, "getNewPosts : you are subscribed to $wilayaName")
+
+                val value = baseUrl + link.attr("href") + "&rech_order_by=11"
                 Log.d(TAG ,"getNewPosts : wilayaLink : $value")
-//                val wilayaPage = getDocument(value)
-//                val lastPosted = wilayaPage.select("a[href*=cod_ann]").first()
-//                val indexOfWilaya =
-//                    wilayaSubscriber.subscribedWilayas.indexOfFirst { it.wilayaName == link.text() }
-//                if (wilayaSubscriber.subscribedWilayas[indexOfWilaya].lastLink == null) {
-//                    wilayaSubscriber.subscribedWilayas[indexOfWilaya].lastLink =
-//                        baseUrl + lastPosted.attr("href")
-//                    wilayaSubscriber.saveChanges()
-//                } else if (wilayaSubscriber.subscribedWilayas[indexOfWilaya].lastLink != baseUrl + lastPosted.attr(
-//                        "href"
-//                    )
-//                ) {
-//                    wilayaSubscriber.subscribedWilayas[indexOfWilaya].lastLink =
-//                        baseUrl + lastPosted.attr("href")
-//                    val lastPostInfos = wilayaPage.select(".Tableau1").first()
-//                    val post = getPostFromPge(lastPostInfos)
-//                    newPosts.add(post)
-//                }
+                val wilayaPage = getDocument(value)
+                val lastPosted = baseUrl + wilayaPage.select("a[href*=cod_ann]").first().attr("href")
+                Log.d(TAG,"getNewPosts : lastPosted $wilayaName : $lastPosted")
+                val indexOfWilaya =
+                    wilayaSubscriber.subscribedWilayas.indexOfFirst { it.wilayaName == wilayaName }
+                Log.d(TAG , "getNewPosts : indexOfWilaya $wilayaName : $indexOfWilaya")
+                if (wilayaSubscriber.subscribedWilayas[indexOfWilaya].lastLink == null) {
+                    wilayaSubscriber.subscribedWilayas[indexOfWilaya].lastLink = lastPosted
+                    Log.d(TAG, "$lastPosted saved to $wilayaName")
+                    wilayaSubscriber.saveChanges()
+                } else if (wilayaSubscriber.subscribedWilayas[indexOfWilaya].lastLink != lastPosted
+                ) {
+                    wilayaSubscriber.subscribedWilayas[indexOfWilaya].lastLink = lastPosted
+                    val lastPostInfos = wilayaPage.select(".Tableau1").first()
+                    val post = getPostFromPge(lastPostInfos)
+                    Log.d(TAG,"getNewPosts : a new Post is available in $wilayaName ${post.toString()}")
+                    //newPosts.add(post)
+                }else{
+                    Log.d(TAG, "getNewPosts : No new posts available for $wilayaName")
+                }
             }
             uiThread {
                 consumer.makeNotifications(newPosts)

@@ -7,10 +7,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.navigation.NavigationView
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.PostsListFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.PostsListViewModel
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service.WilayaSubscriptionFragment
 
 //import java.util.*
 
@@ -64,20 +66,26 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         when(item.itemId){
             R.id.nav_home -> {
                 postsListViewModel.fetchNewPosts()
+                showFragment(postsListFragment)
             }
             R.id.nav_sale ->{
                 postsListViewModel.getFavoritePosts("Vente")
+                showFragment(postsListFragment)
 //                navigationView.setCheckedItem(R.id.nav_sale)
             }
             R.id.nav_location -> {
                 postsListViewModel.getFavoritePosts("Location")
+                showFragment(postsListFragment)
 //                navigationView.setCheckedItem(R.id.nav_location)
             }
 
             R.id.nav_holiday -> {
                 postsListViewModel.getFavoritePosts("Location vacance")
+                showFragment(postsListFragment)
 //                navigationView.setCheckedItem(R.id.nav_holiday)
             }
+
+            R.id.nav_subscribe -> showFragment(WilayaSubscriptionFragment())
         }
         navigationView.setCheckedItem(item.itemId)
         drawer.closeDrawer(GravityCompat.START)
@@ -90,6 +98,13 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         }else{
             super.onBackPressed()
         }
+    }
+
+    private fun showFragment(fragment: Fragment){
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 
 

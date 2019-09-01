@@ -130,4 +130,60 @@
     <string name="notification_description">Etre notifier de l\'ajout d\'une annonce dans les wilya que vous suiver</string>
     <string name="new_post_notification_title">Nouveau post</string>
     <string name="new_post_notification_description">Il ya un nouveau post dans la wilaya de %1$s</string>
+
+    <string name="subscribe_toast">Vous suiver les annonecs %1$s</string>
+    <string name="unsubscribe_toast">Vous ne suiver plus les aonnonces de %1$s</string>
+
+    <string-array name="wilayas_array">
+        <item>Adrar</item>
+        <item>Ain Defla</item>
+        <item>Ain Temouchent</item>
+        <item>Ain Temouchent</item>
+        <item>Alger</item>
+        <item>Annaba</item>
+        <item>Batna</item>
+        <item>Béchar</item>
+        <item>Béjaia</item>
+        <item>Biskra</item>
+        <item>Blida</item>
+        <item>Borj Bou Arréridj</item>
+        <item>Boumerdès</item>
+        <item>Buira</item>
+        <item>Chlef</item>
+        <item>Constantine</item>
+        <item>Djelfa</item>
+        <item>El Bayadh</item>
+        <item>El Oued</item>
+        <item>El Tarf</item>
+        <item>Ghardaia</item>
+        <item>Guelma</item>
+        <item>illizi</item>
+        <item>Jijel</item>
+        <item>Khenchela</item>
+        <item>Laghouat</item>
+        <item>Mascara</item>
+        <item>Médéa</item>
+        <item>Mila</item>
+        <item>Mostaganem</item>
+        <item>Msila</item>
+        <item>Naâma</item>
+        <item>Oran</item>
+        <item>Ouargla</item>
+        <item>Oum El Bouaghi</item>
+        <item>Relizane</item>
+        <item>Saida</item>
+        <item>Sétif</item>
+        <item>Sidi Bel Abbès</item>
+        <item>Skikda</item>
+        <item>Souk Ahras</item>
+        <item>Tamanrasset</item>
+        <item>Tébessa</item>
+        <item>Tiaret</item>
+        <item>Tindouf</item>
+        <item>Tipaza</item>
+        <item>Tissemsilt</item>
+        <item>Tizi Ouzou</item>
+        <item>Tlemcen</item>
+
+    </string-array>
 </resources>

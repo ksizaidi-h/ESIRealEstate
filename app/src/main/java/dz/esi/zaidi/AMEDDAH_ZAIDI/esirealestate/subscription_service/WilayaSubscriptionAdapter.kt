@@ -41,11 +41,18 @@ class WilayaSubscriptionAdapter(val subscribedWilayas: List<String>) : ListAdapt
         fun bind(item : String) = with(itemView){
             itemView.tv_wilaya_subscription_item.text = item
             itemView.btn_subscribe.isChecked = item in subscribedWilayas
+            itemView.tv_subscribe.text = if(itemView.btn_subscribe.isChecked){
+                context.getString(R.string.unsubscribe_this)
+            }else{
+                context.getString(R.string.subscribe_this)
+            }
             (itemView.btn_subscribe).setOnClickListener {
                 if(itemView.btn_subscribe.isChecked){
                     onSubscriptionListener.onChecked(item)
+                    itemView.tv_subscribe.text = context.getString(R.string.unsubscribe_this)
                 }else{
                     onSubscriptionListener.onUnchecked(item)
+                    itemView.tv_subscribe.text = context.getString(R.string.subscribe_this)
                 }
             }
         }

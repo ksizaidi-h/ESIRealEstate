@@ -41,4 +41,12 @@ data class RealEstatePost(
     override fun toString(): String {
         return "$postId : $localisation"
     }
+
+    override fun hashCode(): Int {
+        return link.hashCode()
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return link == (other as RealEstatePost).link
+    }
 }

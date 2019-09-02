@@ -20,6 +20,6 @@ class Converters {
 
     @TypeConverter
     fun StringToList(value: String): List<String>? {
-        return if (TextUtils.isEmpty(value)) null else value.split(",").toList()
+        return if (TextUtils.isEmpty(value)) ArrayList() else value.split(",").toList()
     }
 }

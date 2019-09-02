@@ -15,7 +15,7 @@ class PostDetailsActivity : AppCompatActivity() {
     private lateinit var postsDetailsViewModel: PostDetailsViewModel
 
     companion object{
-        const val SHOW_POST_DETAILS_CODE = 1
+        var SHOW_POST_DETAILS_CODE = 1
         fun createIntent(context:Context,
                          post : RealEstatePost) : Intent{
             val intent = Intent(context, PostDetailsActivity::class.java)

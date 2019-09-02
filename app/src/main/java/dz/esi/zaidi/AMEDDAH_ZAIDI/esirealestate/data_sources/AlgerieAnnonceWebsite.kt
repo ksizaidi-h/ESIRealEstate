@@ -132,7 +132,7 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
 
     }
 
-    override fun getNewPosts(consumer: RealEstatePostsConsumer, context: Context) {
+    override fun getNewPosts(consumer: NotificationConsumer, context: Context) {
         val newPosts = ArrayList<RealEstatePost>()
         doAsync{
             val page = getDocument(baseUrl)
@@ -161,20 +161,19 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
                     wilayaSubscriber.subscribedWilayas[indexOfWilaya].lastLink = lastPosted
                     Log.d(TAG, "$lastPosted saved to $wilayaName")
                     wilayaSubscriber.saveChanges()
-                } else if (wilayaSubscriber.subscribedWilayas[indexOfWilaya].lastLink != lastPosted
-                ) {
+                } else if (wilayaSubscriber.subscribedWilayas[indexOfWilaya].lastLink != lastPosted) {
                     wilayaSubscriber.subscribedWilayas[indexOfWilaya].lastLink = lastPosted
                     wilayaSubscriber.saveChanges()
                     val lastPostInfos = wilayaPage.select(".Tableau1").first()
                     val post = getPostFromPge(lastPostInfos)
                     Log.d(TAG,"getNewPosts : should show a notification for  $wilayaName ${post}")
-                    newPosts.add(post)
+                    uiThread {
+                        consumer.makeNotification(post)
+                    }
+
                 }else{
                     Log.d(TAG, "getNewPosts : No new posts available for $wilayaName")
                 }
-            }
-            uiThread {
-                consumer.addPosts(newPosts)
             }
         }
     }

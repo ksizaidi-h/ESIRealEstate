@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                 .replace(R.id.fragment_container, postsListFragment)
                 .commit()
             navigationView.setCheckedItem(R.id.nav_home)
+            supportActionBar?.title = getString(R.string.home)
         }
     }
 
@@ -81,24 +82,27 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     private fun showView(view : String){
         when(view){
             HOME -> {
+                supportActionBar?.title = getString(R.string.home)
                 postsListViewModel.fetchNewPosts()
                 navigationView.setCheckedItem(R.id.nav_home)
             }
 
             SELL -> {
-                 postsListViewModel.getFavoritePosts(SELL_CATEGORY)
+                supportActionBar?.title = getString(R.string.sale)
+                postsListViewModel.getFavoritePosts(SELL_CATEGORY)
                     navigationView.setCheckedItem(R.id.nav_sale)
 
             }
 
             RENT -> {
-                    postsListViewModel.getFavoritePosts(RENT_CATEGORY)
-                    navigationView.setCheckedItem(R.id.nav_location)
+                supportActionBar?.title = getString(R.string.nav_location)
+                postsListViewModel.getFavoritePosts(RENT_CATEGORY)
+                navigationView.setCheckedItem(R.id.nav_location)
 
             }
 
             HOLIDAY -> {
-
+                supportActionBar?.title = getString(R.string.holiday)
                 postsListViewModel.getFavoritePosts(HOLIDAY_CATEGORY)
                 navigationView.setCheckedItem(R.id.nav_holiday)
             }
@@ -136,6 +140,8 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                 if(viewStack.isEmpty()) viewStack.push(HOME)
                 showFragment(WilayaSubscriptionFragment())
                 navigationView.setCheckedItem(item.itemId)
+                supportActionBar?.title = getString(R.string.subscribe)
+
             }
 
         }

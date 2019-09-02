@@ -21,12 +21,22 @@ class ImageSliderAdapter(val context : Context, val pictures : ArrayList<String>
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val imageView = ImageView(context)
-        Picasso
-            .get()
-            .load(pictures[position])
-            .fit()
-            .into(imageView)
-        container.addView(imageView)
+        if (pictures.size > 0){
+            Picasso
+                .get()
+                .load(pictures[position])
+                .fit()
+                .into(imageView)
+            container.addView(imageView)
+        }else{
+            Picasso
+                .get()
+                .load(R.drawable.no_images)
+                .fit()
+                .into(imageView)
+            container.addView(imageView)
+        }
+
 
         return imageView
     }

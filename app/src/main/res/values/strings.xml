@@ -124,6 +124,9 @@
     <string name="nav_location">Location</string>
     <string name="holiday">Vacances</string>
     <string name="subscribe">Suivre des wilayas</string>
+    <string name="subscribe_this">Suivre</string>
+    <string name="unsubscribe_this">Ne plus suivre</string>
+
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

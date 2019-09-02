@@ -137,12 +137,6 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
         doAsync{
             val page = getDocument(baseUrl)
             val wilayaLinks = page.select("a[href*=cod_reg]")
-            for (link in wilayaLinks){
-                val str = link.text().replace("\\([0-9]+\\)".toRegex(),"").trim()
-                Log.d(TAG , "getNewPosts : $str")
-                Log.d(TAG , "newPosts : ${str == "Béjaia"}")
-
-            }
 
             val wilayaSubscriber = WilayaSubscriber(context)
 

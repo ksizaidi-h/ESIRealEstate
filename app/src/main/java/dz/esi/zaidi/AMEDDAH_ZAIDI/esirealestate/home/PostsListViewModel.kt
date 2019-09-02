@@ -16,8 +16,8 @@ class PostsListViewModel(application: Application) : AndroidViewModel(applicatio
         posts = realEstatePostsRepository.posts
     }
 
-    fun getFavoritePosts(category : String){
-        realEstatePostsRepository.getPostsByCategory(category)
+    fun getFavoritePosts(category : String) : Boolean{
+        return !realEstatePostsRepository.getPostsByCategory(category).value.isNullOrEmpty()
     }
 
     fun fetchNewPosts(){

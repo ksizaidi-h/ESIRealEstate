@@ -2,6 +2,7 @@ package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
@@ -10,10 +11,10 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.navigation.NavigationView
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.NoPostsFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.PostsListFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.PostsListViewModel
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service.WilayaSubscriptionFragment
-import java.util.*
 
 //import java.util.*
 
@@ -24,12 +25,14 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     private lateinit var drawer: DrawerLayout
     private lateinit var navigationView : NavigationView
     private lateinit var postsListFragment: PostsListFragment
-    private val viewStack = Stack<Int>()
+    private val viewStack = ViewStack()
+    private var currentView = HOME
+
     companion object{
-        private const val HOME = R.id.nav_home
-        private const val SELL = R.id.nav_sale
-        private const val RENT = R.id.nav_location
-        private const val HOLIDAY = R.id.nav_holiday
+        private const val HOME = "Home"
+        private const val SELL = "Sell"
+        private const val RENT = "Rent"
+        private const val HOLIDAY = "Holiday"
         private const val SELL_CATEGORY = "Vente"
         private const val RENT_CATEGORY = "Location"
         private const val HOLIDAY_CATEGORY = "Location vacance"
@@ -66,9 +69,49 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                 .beginTransaction()
                 .replace(R.id.fragment_container, postsListFragment)
                 .commit()
-            viewStack.push(HOME)
             navigationView.setCheckedItem(R.id.nav_home)
         }
+    }
+
+
+
+    private fun showView(view : String){
+        var postsAvailable = true;
+        var category = ""
+        when(view){
+            HOME -> {
+                postsListViewModel.fetchNewPosts()
+                navigationView.setCheckedItem(R.id.nav_home)
+            }
+
+            SELL -> {
+               postsAvailable = postsListViewModel.getFavoritePosts(SELL_CATEGORY)
+                navigationView.setCheckedItem(R.id.nav_sale)
+
+                category = SELL_CATEGORY
+            }
+
+            RENT -> {
+               postsAvailable = postsListViewModel.getFavoritePosts(RENT_CATEGORY)
+                category = RENT_CATEGORY
+                navigationView.setCheckedItem(R.id.nav_location)
+
+            }
+
+            HOLIDAY -> {
+                postsAvailable = postsListViewModel.getFavoritePosts(HOLIDAY_CATEGORY)
+                category = HOLIDAY_CATEGORY
+                navigationView.setCheckedItem(R.id.nav_holiday)
+
+            }
+
+        }
+        if(postsAvailable){
+            showFragment(postsListFragment)
+        }else{
+            showFragment(NoPostsFragment.newInstance(category))
+        }
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -76,26 +119,44 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         when(item.itemId){
             R.id.nav_home -> {
                 showView(HOME)
+                changeCurrentView(HOME)
             }
             R.id.nav_sale ->{
                 showView(SELL)
+                changeCurrentView(SELL)
+
             }
             R.id.nav_location -> {
                 showView(RENT)
+                changeCurrentView(RENT)
+
             }
 
             R.id.nav_holiday -> {
                 showView(HOLIDAY)
+                changeCurrentView(HOLIDAY)
             }
 
             R.id.nav_subscribe -> {
+                if(viewStack.isEmpty()) viewStack.push(HOME)
                 showFragment(WilayaSubscriptionFragment())
                 navigationView.setCheckedItem(item.itemId)
             }
 
         }
+        Log.d("viewStack", viewStack.toString())
+        navigationView.setCheckedItem(item.itemId)
         drawer.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    private fun changeCurrentView(view : String){
+        if(viewStack.isEmpty()) {
+            viewStack.push(HOME)
+        }else{
+            viewStack.push(currentView)
+        }
+        currentView = view
     }
 
     override fun onBackPressed() {
@@ -105,6 +166,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
             super.onBackPressed()
         }else{
             showView(viewStack.pop())
+            Log.d("viewStack", viewStack.toString())
         }
     }
 
@@ -115,35 +177,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
             .commit()
     }
 
-    private fun showView(view : Int){
-        when(view){
-            HOME -> {
-                postsListViewModel.fetchNewPosts()
-            }
 
-            SELL -> {
-                postsListViewModel.getFavoritePosts(SELL_CATEGORY)
-            }
-
-            RENT -> {
-                postsListViewModel.getFavoritePosts(RENT_CATEGORY)
-            }
-
-            HOLIDAY -> {
-                postsListViewModel.getFavoritePosts(HOLIDAY_CATEGORY)
-            }
-
-        }
-
-        if(!viewStack.isEmpty()){
-            if(viewStack.peek() != view){
-                viewStack.push(view)
-            }
-        }
-        showFragment(postsListFragment)
-        navigationView.setCheckedItem(view)
-
-    }
 
 
 }

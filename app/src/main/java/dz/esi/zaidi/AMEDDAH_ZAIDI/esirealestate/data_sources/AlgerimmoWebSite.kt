@@ -79,7 +79,7 @@ class AlgerimmoWebSite() : RealEstateWebSite {
                             posts.add(post)
                         }
                         //realEstatePostsRepository.posts.postValue(posts)
-                        consumer.makeNotifications(posts)
+                        consumer.addPosts(posts)
                     }
                 }
 

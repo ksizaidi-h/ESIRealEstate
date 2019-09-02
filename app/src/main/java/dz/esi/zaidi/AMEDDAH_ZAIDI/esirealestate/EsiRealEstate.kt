@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service.WildaSubscriptionServiceReceiver
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service.WilayaSubscriptionServiceReceiver
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.util.Log
@@ -19,9 +19,9 @@ class EsiRealEstate : Application() {
         private const val TAG = "EsiRealEstate"
 
         fun scheduleNotification(context: Context, first : Long){
-            val intent = Intent(context, WildaSubscriptionServiceReceiver::class.java)
+            val intent = Intent(context, WilayaSubscriptionServiceReceiver::class.java)
             val pIntent = PendingIntent.getBroadcast(context,
-                WildaSubscriptionServiceReceiver.REQUEST_CODE,
+                WilayaSubscriptionServiceReceiver.REQUEST_CODE,
                 intent,
                 PendingIntent.FLAG_CANCEL_CURRENT)
 
@@ -74,9 +74,9 @@ class EsiRealEstate : Application() {
 
 
     fun cancelAlarm() {
-        val intent = Intent(applicationContext, WildaSubscriptionServiceReceiver::class.java)
+        val intent = Intent(applicationContext, WilayaSubscriptionServiceReceiver::class.java)
         val pIntent = PendingIntent.getBroadcast(
-            this, WildaSubscriptionServiceReceiver.REQUEST_CODE,
+            this, WilayaSubscriptionServiceReceiver.REQUEST_CODE,
             intent, PendingIntent.FLAG_CANCEL_CURRENT
         )
         val alarm = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager

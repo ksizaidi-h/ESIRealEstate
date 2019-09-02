@@ -1,5 +1,7 @@
 package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
@@ -12,7 +14,28 @@ class PostDetailsActivity : AppCompatActivity() {
 
     private lateinit var postsDetailsViewModel: PostDetailsViewModel
 
+    companion object{
+        const val SHOW_POST_DETAILS_CODE = 1
+        fun createIntent(context:Context,
+                         post : RealEstatePost) : Intent{
+            val intent = Intent(context, PostDetailsActivity::class.java)
+            intent.putCharSequenceArrayListExtra(ImageSliderFragment.PICTURES, ArrayList(post.pictures))
+            intent.putExtra(DescriptionFragment.DESCRIPTION, post.description)
+            intent.putExtra(DescriptionFragment.TYPE, post.type)
+            intent.putExtra(DescriptionFragment.CATEGORY, post.category)
+            intent.putExtra(DescriptionFragment.SURFACE, post.surface)
+            intent.putExtra(DescriptionFragment.PRICE, post.price)
+            intent.putExtra(DescriptionFragment.WILAYA, post.wilaya)
+            intent.putExtra(DescriptionFragment.COMMUNE, post.commune)
+            intent.putExtra(DescriptionFragment.ADDRESS, post.address)
+            intent.putExtra(ContactFragment.PHONE,post.phone)
+            intent.putExtra(ActionsFragment.LINK, post.link)
+            return intent
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_details)
 

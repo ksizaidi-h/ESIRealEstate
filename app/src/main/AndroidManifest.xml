@@ -30,7 +30,7 @@
         </activity>
         <service android:name=".subscription_service.WilayaSubscriptionService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
-        <receiver android:name=".subscription_service.WildaSubscriptionServiceReceiver"
+        <receiver android:name=".subscription_service.WilayaSubscriptionServiceReceiver"
                 android:process=":remote">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>

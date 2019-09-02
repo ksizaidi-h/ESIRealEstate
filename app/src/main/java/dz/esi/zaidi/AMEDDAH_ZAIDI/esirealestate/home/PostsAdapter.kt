@@ -64,18 +64,7 @@ class PostsAdapter : ListAdapter<RealEstatePost, PostsAdapter.PostsViewHolder>(D
             }
 
             setOnClickListener{
-                val intent = Intent(context, PostDetailsActivity::class.java)
-                intent.putCharSequenceArrayListExtra(ImageSliderFragment.PICTURES, ArrayList(item.pictures))
-                intent.putExtra(DescriptionFragment.DESCRIPTION, item.description)
-                intent.putExtra(DescriptionFragment.TYPE, item.type)
-                intent.putExtra(DescriptionFragment.CATEGORY, item.category)
-                intent.putExtra(DescriptionFragment.SURFACE, item.surface)
-                intent.putExtra(DescriptionFragment.PRICE, item.price)
-                intent.putExtra(DescriptionFragment.WILAYA, item.wilaya)
-                intent.putExtra(DescriptionFragment.COMMUNE, item.commune)
-                intent.putExtra(DescriptionFragment.ADDRESS, item.address)
-                intent.putExtra(ContactFragment.PHONE,item.phone)
-                intent.putExtra(ActionsFragment.LINK, item.link)
+                val intent = PostDetailsActivity.createIntent(context, item)
                 context.startActivity(intent)
             }
         }

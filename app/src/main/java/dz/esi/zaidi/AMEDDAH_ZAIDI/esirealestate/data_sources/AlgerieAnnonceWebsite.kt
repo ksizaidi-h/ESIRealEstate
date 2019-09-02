@@ -125,7 +125,7 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
                 posts.add(post)
             }
             uiThread {
-                consumer.makeNotifications(posts)
+                consumer.addPosts(posts)
             }
 
         }
@@ -164,16 +164,17 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
                 } else if (wilayaSubscriber.subscribedWilayas[indexOfWilaya].lastLink != lastPosted
                 ) {
                     wilayaSubscriber.subscribedWilayas[indexOfWilaya].lastLink = lastPosted
+                    wilayaSubscriber.saveChanges()
                     val lastPostInfos = wilayaPage.select(".Tableau1").first()
                     val post = getPostFromPge(lastPostInfos)
-                    Log.d(TAG,"getNewPosts : a new Post is available in $wilayaName ${post.toString()}")
-                    //newPosts.add(post)
+                    Log.d(TAG,"getNewPosts : should show a notification for  $wilayaName ${post}")
+                    newPosts.add(post)
                 }else{
                     Log.d(TAG, "getNewPosts : No new posts available for $wilayaName")
                 }
             }
             uiThread {
-                consumer.makeNotifications(newPosts)
+                consumer.addPosts(newPosts)
             }
         }
     }

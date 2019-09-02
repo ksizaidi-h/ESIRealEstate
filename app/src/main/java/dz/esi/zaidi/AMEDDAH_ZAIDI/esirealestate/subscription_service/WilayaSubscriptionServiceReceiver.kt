@@ -11,7 +11,7 @@ import android.widget.Toast
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.EsiRealEstate
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.Utils
 
-class WildaSubscriptionServiceReceiver : BroadcastReceiver(){
+class WilayaSubscriptionServiceReceiver : BroadcastReceiver(){
     companion object{
         const val REQUEST_CODE = 3
     }

@@ -134,6 +134,7 @@
     <string name="subscribe_toast">Vous suiver les annonecs %1$s</string>
     <string name="unsubscribe_toast">Vous ne suiver plus les aonnonces de %1$s</string>
     <string name="no_posts">Vous n\'avez sauvgarder aucun post dans la catégorie %1$s</string>
+    <string name="view_details">Voir les détails</string>
 
     <string-array name="wilayas_array">
         <item>Adrar</item>

@@ -44,7 +44,7 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
     }
 
 
-    override fun makeNotifications(newPosts: List<RealEstatePost>) {
+    override fun addPosts(newPosts: List<RealEstatePost>) {
         posts.value = newPosts
         postsCache.addAll(posts.value!!)
     }

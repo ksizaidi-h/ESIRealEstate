@@ -15,6 +15,9 @@ import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.NoPostsFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.PostsListFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.PostsListViewModel
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service.WilayaSubscriptionFragment
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.doAsyncResult
+import org.jetbrains.anko.uiThread
 
 //import java.util.*
 
@@ -76,8 +79,6 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
 
 
     private fun showView(view : String){
-        var postsAvailable = true;
-        var category = ""
         when(view){
             HOME -> {
                 postsListViewModel.fetchNewPosts()
@@ -85,32 +86,26 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
             }
 
             SELL -> {
-               postsAvailable = postsListViewModel.getFavoritePosts(SELL_CATEGORY)
-                navigationView.setCheckedItem(R.id.nav_sale)
+                 postsListViewModel.getFavoritePosts(SELL_CATEGORY)
+                    navigationView.setCheckedItem(R.id.nav_sale)
 
-                category = SELL_CATEGORY
             }
 
             RENT -> {
-               postsAvailable = postsListViewModel.getFavoritePosts(RENT_CATEGORY)
-                category = RENT_CATEGORY
-                navigationView.setCheckedItem(R.id.nav_location)
+                    postsListViewModel.getFavoritePosts(RENT_CATEGORY)
+                    navigationView.setCheckedItem(R.id.nav_location)
 
             }
 
             HOLIDAY -> {
-                postsAvailable = postsListViewModel.getFavoritePosts(HOLIDAY_CATEGORY)
-                category = HOLIDAY_CATEGORY
-                navigationView.setCheckedItem(R.id.nav_holiday)
 
+                postsListViewModel.getFavoritePosts(HOLIDAY_CATEGORY)
+                navigationView.setCheckedItem(R.id.nav_holiday)
             }
 
-        }
-        if(postsAvailable){
-            showFragment(postsListFragment)
-        }else{
-            showFragment(NoPostsFragment.newInstance(category))
-        }
+            }
+        showFragment(postsListFragment)
+
 
     }
 
@@ -151,12 +146,14 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     }
 
     private fun changeCurrentView(view : String){
-        if(viewStack.isEmpty()) {
-            viewStack.push(HOME)
-        }else{
-            viewStack.push(currentView)
+        if(currentView != view){
+            if(viewStack.isEmpty()) {
+                viewStack.push(HOME)
+            }else{
+                viewStack.push(currentView)
+            }
+            currentView = view
         }
-        currentView = view
     }
 
     override fun onBackPressed() {

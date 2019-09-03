@@ -16,12 +16,12 @@
             android:id="@+id/empty_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/rv_home"
-            app:layout_constraintEnd_toEndOf="@+id/rv_home"
-            app:layout_constraintStart_toStartOf="@+id/rv_home"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="EMPTY"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            style="@style/EmptyList"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

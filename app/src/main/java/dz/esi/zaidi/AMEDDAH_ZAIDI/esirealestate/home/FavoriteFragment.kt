@@ -37,6 +37,9 @@ class FavoriteFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         viewModel = ViewModelProviders.of(activity!!).get(FavoritesViewModel::class.java)
+        viewModel.currentCategory.observe(this, Observer {
+            empty_view.text = getString(R.string.no_posts,it)
+        })
         viewModel.posts.observe(this, Observer {
             posts ->
             run {

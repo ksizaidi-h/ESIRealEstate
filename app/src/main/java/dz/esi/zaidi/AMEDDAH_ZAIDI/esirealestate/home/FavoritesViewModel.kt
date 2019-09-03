@@ -3,22 +3,21 @@ package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePost
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePostsRepository
 
-class PostsListViewModel(application: Application) : AndroidViewModel(application) {
+class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
+
     private var realEstatePostsRepository = RealEstatePostsRepository(application)
     var posts : LiveData<List<RealEstatePost>>
-    var isLoading = realEstatePostsRepository.isLoading
+
+
     init {
-        realEstatePostsRepository.fetchPosts()
-        posts = realEstatePostsRepository.posts
+        posts = realEstatePostsRepository.favoritePosts
     }
 
-
-    fun fetchNewPosts(){
-         realEstatePostsRepository.fetchPosts()
+    fun getFavoritePosts(category : String) : Boolean{
+        return !realEstatePostsRepository.getPostsByCategory(category).value.isNullOrEmpty()
     }
+
 }

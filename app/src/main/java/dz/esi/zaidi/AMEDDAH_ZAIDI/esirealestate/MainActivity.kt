@@ -11,9 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.navigation.NavigationView
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.NoPostsFragment
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.PostsListFragment
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.PostsListViewModel
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.*
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service.WilayaSubscriptionFragment
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.doAsyncResult
@@ -28,6 +26,8 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     private lateinit var drawer: DrawerLayout
     private lateinit var navigationView : NavigationView
     private lateinit var postsListFragment: PostsListFragment
+    private val favoriteFragment = FavoriteFragment()
+    private lateinit var favoritesViewModel : FavoritesViewModel
     private val viewStack = ViewStack()
     private var currentView = HOME
 
@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         setContentView(R.layout.activity_main)
 
         postsListViewModel = ViewModelProviders.of(this).get(PostsListViewModel::class.java)
+        favoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel::class.java)
 
         val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
         setSupportActionBar(toolbar)
@@ -84,31 +85,34 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
             HOME -> {
                 supportActionBar?.title = getString(R.string.home)
                 postsListViewModel.fetchNewPosts()
+                showFragment(postsListFragment)
                 navigationView.setCheckedItem(R.id.nav_home)
             }
 
             SELL -> {
                 supportActionBar?.title = getString(R.string.sale)
-                postsListViewModel.getFavoritePosts(SELL_CATEGORY)
+                favoritesViewModel.getFavoritePosts(SELL_CATEGORY)
+                showFragment(favoriteFragment)
                     navigationView.setCheckedItem(R.id.nav_sale)
 
             }
 
             RENT -> {
                 supportActionBar?.title = getString(R.string.nav_location)
-                postsListViewModel.getFavoritePosts(RENT_CATEGORY)
+                favoritesViewModel.getFavoritePosts(RENT_CATEGORY)
+                showFragment(favoriteFragment)
                 navigationView.setCheckedItem(R.id.nav_location)
 
             }
 
             HOLIDAY -> {
                 supportActionBar?.title = getString(R.string.holiday)
-                postsListViewModel.getFavoritePosts(HOLIDAY_CATEGORY)
+                favoritesViewModel.getFavoritePosts(HOLIDAY_CATEGORY)
+                showFragment(favoriteFragment)
                 navigationView.setCheckedItem(R.id.nav_holiday)
             }
 
             }
-        showFragment(postsListFragment)
 
 
     }

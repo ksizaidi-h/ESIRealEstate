@@ -17,6 +17,8 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
 
     private val postsCache : MutableList<RealEstatePost>
     private lateinit var realEstatePostDAO : RealEstatePostDAO
+    var isLoading = MutableLiveData<Boolean>()
+    var favoritePosts : MutableLiveData<List<RealEstatePost>>
 
     private val postsSources = arrayOf<RealEstateWebSite>(
         /*AlgerimmoWebSite(),*/ AlgerieAnnonceWebsite()
@@ -29,10 +31,12 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
             realEstatePostDAO = database.realEstatePostDao()
         }
         postsCache = ArrayList<RealEstatePost>()
+        favoritePosts = MutableLiveData<List<RealEstatePost>>()
 
     }
 
     fun fetchPosts(){
+        isLoading.value = true
         if(posts.value == null){
             posts.value = ArrayList<RealEstatePost>()
             for(site in postsSources){
@@ -40,6 +44,10 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
             }
         }else{
             posts.value = postsCache
+            if (!postsCache.isEmpty()){
+                isLoading.value = false
+            }
+
         }
     }
 
@@ -47,6 +55,7 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
     override fun addPosts(newPosts: List<RealEstatePost>) {
         posts.value = newPosts
         postsCache.addAll(posts.value!!)
+        isLoading.value = false
     }
 
     fun insertRealEstatePost(post : RealEstatePost){
@@ -62,19 +71,19 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
     }
 
     fun getPostsByCategory(category : String) : LiveData<List<RealEstatePost>>{
-        doAsyncResult {
-            val posts = realEstatePostDAO.getPostsByCategory(category)
-            uiThread {
-                it.posts.value = posts
-            }
-        }.get()
-        return posts
+        doAsync {
+            favoritePosts.postValue(realEstatePostDAO.getPostsByCategory(category))
+            Log.d("FavoriteFragment","${favoritePosts.value.isNullOrEmpty()}")
+
+        }
+        return favoritePosts
     }
 
     fun getPostByLink(link : String) : RealEstatePost?{
         var post : RealEstatePost? = null
         doAsyncResult {
-            post = realEstatePostDAO.getPostByLink(link)
+
+                post = realEstatePostDAO.getPostByLink(link)
             uiThread {
             }
         }.get()

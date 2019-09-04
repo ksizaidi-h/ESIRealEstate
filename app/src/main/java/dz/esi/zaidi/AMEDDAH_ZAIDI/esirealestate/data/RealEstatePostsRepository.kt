@@ -15,7 +15,7 @@ import org.jetbrains.anko.uiThread
 
 class RealEstatePostsRepository(application: Application) : RealEstatePostsConsumer{
 
-    private val postsCache : MutableList<RealEstatePost>
+    private  var postsCache : MutableList<RealEstatePost>
     private lateinit var realEstatePostDAO : RealEstatePostDAO
     var isLoading = MutableLiveData<Boolean>()
     var favoritePosts : MutableLiveData<List<RealEstatePost>>
@@ -52,10 +52,11 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
     }
 
 
-    override fun addPosts(newPosts: List<RealEstatePost>) {
-        posts.value = newPosts
-        postsCache.addAll(posts.value!!)
-        isLoading.value = false
+    override fun addPost(newPost: RealEstatePost) {
+        postsCache = ArrayList(postsCache)
+        postsCache.add(newPost)
+        posts.postValue(postsCache)
+        isLoading.postValue(false)
     }
 
     fun insertRealEstatePost(post : RealEstatePost){

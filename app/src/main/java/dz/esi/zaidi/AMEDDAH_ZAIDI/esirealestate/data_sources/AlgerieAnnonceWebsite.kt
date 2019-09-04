@@ -116,16 +116,12 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
 
     override fun getRealEstatePosts(consumer: RealEstatePostsConsumer) {
         doAsync {
-            val posts = ArrayList<RealEstatePost>()
             val page = getDocument(baseUrl + "/AnnoncesImmobilier.asp?rech_order_by=11")
             val infos = page.select(".Tableau1")
 
             for (info in infos) {
                 val post = getPostFromPge(info)
-                posts.add(post)
-            }
-            uiThread {
-                consumer.addPosts(posts)
+                 consumer.addPost(post)
             }
 
         }

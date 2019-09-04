@@ -76,10 +76,10 @@ class AlgerimmoWebSite() : RealEstateWebSite {
                                 pictures,
                                 item.link
                             )
-                            posts.add(post)
+                            consumer.addPost(post)
                         }
                         //realEstatePostsRepository.posts.postValue(posts)
-                        consumer.addPosts(posts)
+
                     }
                 }
 

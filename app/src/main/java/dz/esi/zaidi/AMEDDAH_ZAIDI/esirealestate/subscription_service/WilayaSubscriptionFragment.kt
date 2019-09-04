@@ -1,6 +1,7 @@
 package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,8 +27,9 @@ class WilayaSubscriptionFragment : Fragment(){
         v.rv_wilayas.setHasFixedSize(true)
 
         wilayaSubscriptionViewModel = ViewModelProviders.of(this).get(WilayaSubscriptionViewModel::class.java)
-        adapter = WilayaSubscriptionAdapter(wilayaSubscriptionViewModel.subscribedWilayas)
+        adapter = WilayaSubscriptionAdapter()
         adapter.onSubscriptionListener = onSubscribeListener
+        adapter.subscribedWilayasProvider = subscribedWilayasProvider
         val wilayas = resources.getStringArray(R.array.wilayas_array)
         v.rv_wilayas.adapter = adapter
         adapter.submitList(wilayas.toList())
@@ -41,12 +43,20 @@ class WilayaSubscriptionFragment : Fragment(){
     private val onSubscribeListener = object : WilayaSubscriptionAdapter.OnSubscriptionListener{
         override fun onChecked(wilaya : String) {
             wilayaSubscriptionViewModel.subscribeToWilaya(wilaya )
+            Log.d("onSubscribtionFragment",wilayaSubscriptionViewModel.subscribedWilayas.toString())
             Toast.makeText(context, context?.getString(R.string.subscribe_toast,wilaya), Toast.LENGTH_SHORT).show()
         }
 
         override fun onUnchecked(wilaya : String) {
             wilayaSubscriptionViewModel.unSubScribeFromWilaya(wilaya)
             Toast.makeText(context, context?.getString(R.string.unsubscribe_toast,wilaya), Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    private val subscribedWilayasProvider = object : WilayaSubscriptionAdapter.SubscribedWilayasProvider{
+        override fun getCurrentSubscribedWilayas(): List<String> {
+            return wilayaSubscriptionViewModel.getCurrentSubscribedWilayas()
         }
 
     }

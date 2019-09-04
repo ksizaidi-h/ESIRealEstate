@@ -11,12 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
 import kotlinx.android.synthetic.main.wilayas_subscription_item.view.*
 
-class WilayaSubscriptionAdapter(val subscribedWilayas: List<String>) : ListAdapter<String, WilayaSubscriptionAdapter.WilayasViewHolder>(DIFF_CALLBACK){
+class WilayaSubscriptionAdapter() : ListAdapter<String, WilayaSubscriptionAdapter.WilayasViewHolder>(DIFF_CALLBACK){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WilayasViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.wilayas_subscription_item, parent,false)
-        return WilayasViewHolder(view,subscribedWilayas,onSubscriptionListener)
+        return WilayasViewHolder(view,subscribedWilayasProvider,onSubscriptionListener)
     }
 
     override fun onBindViewHolder(holder: WilayasViewHolder, position: Int) {
@@ -37,10 +37,11 @@ class WilayaSubscriptionAdapter(val subscribedWilayas: List<String>) : ListAdapt
         }
     }
 
-    class WilayasViewHolder(itemView: View,val subscribedWilayas : List<String>, val onSubscriptionListener: OnSubscriptionListener) : RecyclerView.ViewHolder(itemView){
+    class WilayasViewHolder(itemView: View,val subscribedWilayasProvider : SubscribedWilayasProvider, val onSubscriptionListener: OnSubscriptionListener) : RecyclerView.ViewHolder(itemView){
         fun bind(item : String) = with(itemView){
             itemView.tv_wilaya_subscription_item.text = item
-            itemView.btn_subscribe.isChecked = item in subscribedWilayas
+            itemView.btn_subscribe.isChecked = item in subscribedWilayasProvider.getCurrentSubscribedWilayas()
+            Log.d("In recyclerview", subscribedWilayasProvider.getCurrentSubscribedWilayas().toString())
             itemView.tv_subscribe.text = if(itemView.btn_subscribe.isChecked){
                 context.getString(R.string.unsubscribe_this)
             }else{
@@ -63,4 +64,10 @@ class WilayaSubscriptionAdapter(val subscribedWilayas: List<String>) : ListAdapt
         fun onUnchecked(wilaya : String)
     }
     lateinit var onSubscriptionListener: OnSubscriptionListener
+
+    interface SubscribedWilayasProvider{
+        fun getCurrentSubscribedWilayas() : List<String>
+    }
+
+    lateinit var subscribedWilayasProvider: SubscribedWilayasProvider
 }

@@ -27,7 +27,7 @@ class WilayaSubscriber(val context: Context) {
         saveChanges()
     }
 
-    private fun getSubScribedWilays() : ArrayList<WilayaPreference>{
+    fun getSubScribedWilays() : ArrayList<WilayaPreference>{
         val sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
         val gson = Gson()
         val savedWilayas = sharedPreferences.getString(WILAYAS, null)

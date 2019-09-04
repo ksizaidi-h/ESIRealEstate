@@ -16,4 +16,8 @@ class WilayaSubscriptionViewModel(application: Application) :AndroidViewModel(ap
     fun unSubScribeFromWilaya(wilaya : String){
         wilayaSubscriber.unsubscribeFromWilaya(wilaya)
     }
+
+    fun getCurrentSubscribedWilayas() : List<String>{
+        return wilayaSubscriber.getSubScribedWilays().map { it.wilayaName }
+    }
 }

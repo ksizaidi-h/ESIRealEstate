@@ -53,7 +53,6 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
 
 
     override fun addPost(newPost: RealEstatePost) {
-        postsCache = ArrayList(postsCache)
         postsCache.add(newPost)
         posts.postValue(postsCache)
         isLoading.postValue(false)

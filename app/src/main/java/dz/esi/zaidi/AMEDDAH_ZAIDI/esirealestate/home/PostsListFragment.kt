@@ -53,7 +53,7 @@ open class PostsListFragment : Fragment() {
         viewModel.posts.observe(this, Observer<List<RealEstatePost>> { posts ->
             run {
                 synchronized(PostsListFragment::class.java){
-                    adapter.submitList(posts)
+                    adapter.submitList(listOf(*posts.toTypedArray()))
                 }
                 Log.d("Update list", posts.toString())
             }

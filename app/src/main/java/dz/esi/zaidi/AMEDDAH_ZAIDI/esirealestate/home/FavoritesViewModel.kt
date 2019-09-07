@@ -18,9 +18,8 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
         posts = realEstatePostsRepository.favoritePosts
     }
 
-    fun getFavoritePosts(category : String) : Boolean{
-        currentCategory.value = category
-        return !realEstatePostsRepository.getPostsByCategory(category).value.isNullOrEmpty()
+    fun getFavoritePosts(category : String){
+        posts  = realEstatePostsRepository.getPostsByCategory(category)
     }
 
 }

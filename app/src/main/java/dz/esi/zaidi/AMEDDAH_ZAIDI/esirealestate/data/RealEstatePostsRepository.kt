@@ -18,7 +18,7 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
     private  var postsCache : MutableList<RealEstatePost>
     private lateinit var realEstatePostDAO : RealEstatePostDAO
     var isLoading = MutableLiveData<Boolean>()
-    var favoritePosts : MutableLiveData<List<RealEstatePost>>
+    var favoritePosts : LiveData<List<RealEstatePost>>
 
     private val postsSources = arrayOf<RealEstateWebSite>(
         /*AlgerimmoWebSite(),*/ AlgerieAnnonceWebsite()
@@ -71,11 +71,7 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
     }
 
     fun getPostsByCategory(category : String) : LiveData<List<RealEstatePost>>{
-        doAsync {
-            favoritePosts.postValue(realEstatePostDAO.getPostsByCategory(category))
-            Log.d("FavoriteFragment","${favoritePosts.value.isNullOrEmpty()}")
-
-        }
+        favoritePosts = realEstatePostDAO.getPostsByCategory(category)
         return favoritePosts
     }
 

@@ -43,13 +43,30 @@ open class PostsListFragment : Fragment() {
         viewModel = ViewModelProviders.of(activity!!).get(PostsListViewModel::class.java)
         viewModel.isLoading.observe(this, Observer {
             if (it == true) {
+                offline_layout.visibility = View.GONE
                 pb_waiting.visibility = View.VISIBLE
                 rv_home.visibility = View.GONE
             } else {
+                offline_layout.visibility = View.GONE
                 pb_waiting.visibility = View.GONE
                 rv_home.visibility = View.VISIBLE
             }
         })
+
+        viewModel.isOnline.observe(this, Observer {
+            if (it == false){
+                pb_waiting.visibility = View.GONE
+                rv_home.visibility = View.GONE
+                offline_layout.visibility = View.VISIBLE
+                btn_offline_retry.setOnClickListener {
+                    viewModel.fetchNewPosts()
+                }
+            }else{
+                pb_waiting.visibility = View.VISIBLE
+                rv_home.visibility = View.GONE
+            }
+        })
+
         viewModel.posts.observe(this, Observer<List<RealEstatePost>> { posts ->
             run {
                 synchronized(PostsListFragment::class.java){

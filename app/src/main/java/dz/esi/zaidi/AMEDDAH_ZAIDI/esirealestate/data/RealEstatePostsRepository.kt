@@ -1,9 +1,11 @@
 package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data
 
 import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.Utils
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.DataBase.RealEstateDatabase
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.DataBase.RealEstatePostDAO
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data_sources.AlgerieAnnonceWebsite
@@ -18,7 +20,9 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
     private  var postsCache : MutableList<RealEstatePost>
     private lateinit var realEstatePostDAO : RealEstatePostDAO
     var isLoading = MutableLiveData<Boolean>()
+    var isOnline = MutableLiveData<Boolean>()
     var favoritePosts : MutableLiveData<List<RealEstatePost>>
+    val context: Context = application.applicationContext
 
     private val postsSources = arrayOf<RealEstateWebSite>(
         /*AlgerimmoWebSite(),*/ AlgerieAnnonceWebsite()
@@ -32,23 +36,27 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
         }
         postsCache = ArrayList<RealEstatePost>()
         favoritePosts = MutableLiveData<List<RealEstatePost>>()
-
+        isOnline.value = false
     }
 
     fun fetchPosts(){
-        isLoading.value = true
-        if(posts.value == null){
-            posts.value = ArrayList<RealEstatePost>()
-            for(site in postsSources){
-                site.getRealEstatePosts(this)
-            }
-        }else{
-            posts.value = postsCache
-            if (!postsCache.isEmpty()){
-                isLoading.value = false
-            }
+        isOnline.value = Utils.isInternetAvailable(context)
+        if (isOnline.value == true){
+            isLoading.value = true
+            if(posts.value == null){
+                posts.value = ArrayList<RealEstatePost>()
+                for(site in postsSources){
+                    site.getRealEstatePosts(this)
+                }
+            }else{
+                posts.value = postsCache
+                if (!postsCache.isEmpty()){
+                    isLoading.value = false
+                }
 
+            }
         }
+
     }
 
 

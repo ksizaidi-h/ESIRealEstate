@@ -49,7 +49,6 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
 
         val labels = insidePostPage.select("td.da_label_field")
         val labelValues = insidePostPage.select("td.da_field_text")
-        var i = 0
 
         val loc = insidePostPage.select(".da_field_text a[href*=cod_vil]")
         val town = loc[0].text()
@@ -135,6 +134,7 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
 
                 val value = baseUrl + link.attr("href") + "&rech_order_by=11"
                 Log.d(TAG ,"getNewPosts : wilayaLink : $value")
+
                 val wilayaPage = getDocument(value)
                 val lastPosted = baseUrl + wilayaPage.select("a[href*=cod_ann]").first().attr("href")
                 Log.d(TAG,"getNewPosts : lastPosted $wilayaName : $lastPosted")

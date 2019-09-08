@@ -12,16 +12,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-<!--    <TextView-->
-<!--            android:id="@+id/empty_view"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintBottom_toBottomOf="@+id/rv_home"-->
-<!--            app:layout_constraintEnd_toEndOf="@+id/rv_home"-->
-<!--            app:layout_constraintStart_toStartOf="@+id/rv_home"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            android:text="EMPTY"-->
-<!--            android:visibility="gone"/>-->
+    <LinearLayout
+            android:id="@+id/offline_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:gravity="center"
+        >
+        <TextView
+                android:id="@+id/offline_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/EmptyList"
+                android:text="@string/btn_retry_txt"/>
+        <Button
+                android:id="@+id/btn_offline_retry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/retry"/>
+    </LinearLayout>
 
     <ProgressBar
             android:id="@+id/pb_waiting"

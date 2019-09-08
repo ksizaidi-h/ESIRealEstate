@@ -12,6 +12,7 @@ class PostsListViewModel(application: Application) : AndroidViewModel(applicatio
     private var realEstatePostsRepository = RealEstatePostsRepository(application)
     var posts : LiveData<List<RealEstatePost>>
     var isLoading = realEstatePostsRepository.isLoading
+    var isOnline = realEstatePostsRepository.isOnline
     init {
         realEstatePostsRepository.fetchPosts()
         posts = realEstatePostsRepository.posts

@@ -13,9 +13,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.navigation.NavigationView
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.*
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service.WilayaSubscriptionFragment
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.doAsyncResult
-import org.jetbrains.anko.uiThread
 
 //import java.util.*
 
@@ -36,6 +33,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         private const val SELL = "Sell"
         private const val RENT = "Rent"
         private const val HOLIDAY = "Holiday"
+        private const val BOOKMARK = "Bookmark"
         private const val SELL_CATEGORY = "Vente"
         private const val RENT_CATEGORY = "Location"
         private const val HOLIDAY_CATEGORY = "Location vacance"
@@ -101,7 +99,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                 supportActionBar?.title = getString(R.string.nav_location)
                 favoritesViewModel.getFavoritePosts(RENT_CATEGORY)
                 showFragment(favoriteFragment)
-                navigationView.setCheckedItem(R.id.nav_location)
+                navigationView.setCheckedItem(R.id.nav_rent)
 
             }
 
@@ -112,7 +110,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                 navigationView.setCheckedItem(R.id.nav_holiday)
             }
 
-            }
+        }
 
 
     }
@@ -129,7 +127,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                 changeCurrentView(SELL)
 
             }
-            R.id.nav_location -> {
+            R.id.nav_rent -> {
                 showView(RENT)
                 changeCurrentView(RENT)
 
@@ -146,6 +144,14 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                 navigationView.setCheckedItem(item.itemId)
                 supportActionBar?.title = getString(R.string.subscribe)
 
+            }
+
+            R.id.nav_bookmark -> {
+               TODO("Implement the logic" +
+                       "if user is logged in" +
+                       "    showFragment(BookmarksFragment()" +
+                       "else" +
+                       "    showFragment(UserLoginFragment")
             }
 
         }

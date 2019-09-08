@@ -67,6 +67,18 @@ class ActionsFragment : Fragment() {
             }
         }
 
+        v.btn_favorites.setOnClickListener {
+            if (it.btn_favorites.isChecked){
+                actionsViewModel.bookmarkLink(link)
+                Toast.makeText(context,"Post added to favorite",Toast.LENGTH_SHORT).show()
+            }else{
+                actionsViewModel.unBookmarkLink(link)
+                Toast.makeText(context,"Post removed from favorite",Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+
         return v
     }
 

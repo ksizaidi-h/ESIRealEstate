@@ -18,4 +18,15 @@ class ActionsViewModel(application: Application) : AndroidViewModel(application)
     fun removeFromFavorite(post : RealEstatePost){
         realEstatePostsRepository.deleteRealEstatePost(post)
     }
+
+    fun bookmarkLink(link : String){
+        TODO( "Should implement the logic to bookmark a link")
+    }
+
+    fun unBookmarkLink(link : String){
+        TODO( "Should implement the logic to unbookmark a link")
+    }
+
+
+
 }

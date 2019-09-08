@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.navigation.NavigationView
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks.UserLoginFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.*
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service.WilayaSubscriptionFragment
 
@@ -147,11 +148,12 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
             }
 
             R.id.nav_bookmark -> {
-               TODO("Implement the logic" +
+               /*TODO("Implement the logic" +
                        "if user is logged in" +
                        "    showFragment(BookmarksFragment()" +
                        "else" +
-                       "    showFragment(UserLoginFragment")
+                       "    showFragment(UserLoginFragment")*/
+                showFragment(UserLoginFragment())
             }
 
         }

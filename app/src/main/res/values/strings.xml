@@ -139,6 +139,8 @@
     <string name="no_posts">Vous n\'avez sauvgarder aucun post dans la catégorie %1$s</string>
     <string name="view_details">Voir les détails</string>
     <string name="my_bookmarks">Mes signets</string>
+    <string name="facebook_login">Facebook Login</string>
+    <string name="google_login">Google Login</string>
 
     <string-array name="wilayas_array">
         <item>Adrar</item>

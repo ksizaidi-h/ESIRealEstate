@@ -67,9 +67,6 @@ open class PostsListFragment : Fragment() {
                         Toast.makeText(context,getString(R.string.online_toast),Toast.LENGTH_SHORT).show()
                     }
                 }
-            }else{
-                pb_waiting.visibility = View.VISIBLE
-                rv_home.visibility = View.GONE
             }
         })
 

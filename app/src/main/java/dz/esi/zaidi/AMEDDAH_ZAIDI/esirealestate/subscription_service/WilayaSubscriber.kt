@@ -19,12 +19,7 @@ class WilayaSubscriber(val context: Context) {
     }
 
     init {
-        if(Looper.myLooper() == Looper.getMainLooper()){
-            wilayas.value = subscribedWilayas.map { it.wilayaName }
-        }else{
-            wilayas.postValue(subscribedWilayas.map { it.wilayaName })
-
-        }
+        setWilayas()
     }
 
     inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object: TypeToken<T>() {}.type)
@@ -53,11 +48,20 @@ class WilayaSubscriber(val context: Context) {
 
 
      fun saveChanges(){
-         wilayas.value = subscribedWilayas.map { it.wilayaName }
+         setWilayas()
         val savedWilayas =  Gson().toJson(subscribedWilayas)
         val editor = context.getSharedPreferences(SHARED_PREFERENCES,Context.MODE_PRIVATE).edit()
         editor.putString(WILAYAS, savedWilayas)
         editor.apply()
 
+    }
+
+    private fun setWilayas(){
+        if(Looper.myLooper() == Looper.getMainLooper()){
+            wilayas.value = subscribedWilayas.map { it.wilayaName }
+        }else{
+            wilayas.postValue(subscribedWilayas.map { it.wilayaName })
+
+        }
     }
 }

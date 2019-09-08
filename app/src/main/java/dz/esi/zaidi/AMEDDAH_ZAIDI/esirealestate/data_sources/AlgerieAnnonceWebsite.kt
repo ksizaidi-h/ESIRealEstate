@@ -131,14 +131,14 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
     override fun getNewPosts(consumer: NotificationConsumer, context: Context) {
         val newPosts = ArrayList<RealEstatePost>()
         val wilayaSubscriber = WilayaSubscriber(context)
-        val wilayaNames = wilayaSubscriber.wilayas.value!!
+//        val wilayaNames = wilayaSubscriber.wilayas.value!!
         doAsync{
             val page = getDocument(baseUrl)
             val wilayaLinks = page.select("a[href*=cod_reg]")
 
 
             val filteredLinks = wilayaLinks.filter {
-                it.text().replace("\\([0-9]+\\)".toRegex(),"").trim() in wilayaNames
+                it.text().replace("\\([0-9]+\\)".toRegex(),"").trim() in wilayaSubscriber.subscribedWilayas.map { it.wilayaName }
             }
 
             for (link in filteredLinks) {

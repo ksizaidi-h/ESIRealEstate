@@ -1,9 +1,11 @@
 package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service
 
 import android.content.Context
+import android.os.Looper
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.jetbrains.anko.doAsync
 
 class WilayaSubscriber(val context: Context) {
 
@@ -17,7 +19,12 @@ class WilayaSubscriber(val context: Context) {
     }
 
     init {
-        wilayas.value = subscribedWilayas.map { it.wilayaName }
+        if(Looper.myLooper() == Looper.getMainLooper()){
+            wilayas.value = subscribedWilayas.map { it.wilayaName }
+        }else{
+            wilayas.postValue(subscribedWilayas.map { it.wilayaName })
+
+        }
     }
 
     inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object: TypeToken<T>() {}.type)

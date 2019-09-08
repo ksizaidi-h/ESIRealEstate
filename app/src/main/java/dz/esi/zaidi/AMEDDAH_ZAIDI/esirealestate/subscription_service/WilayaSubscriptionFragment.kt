@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
@@ -16,27 +17,32 @@ import kotlinx.android.synthetic.main.wilaya_subscription_fragment.view.*
 class WilayaSubscriptionFragment : Fragment(){
     private lateinit var wilayaSubscriptionViewModel: WilayaSubscriptionViewModel
     private lateinit var adapter : WilayaSubscriptionAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val v = inflater.inflate(R.layout.wilaya_subscription_fragment,container,false)
-
-        v.rv_wilayas.layoutManager = LinearLayoutManager(context)
-        v.rv_wilayas.setHasFixedSize(true)
-
-        wilayaSubscriptionViewModel = ViewModelProviders.of(this).get(WilayaSubscriptionViewModel::class.java)
-        adapter = WilayaSubscriptionAdapter()
-        adapter.onSubscriptionListener = onSubscribeListener
-        adapter.subscribedWilayasProvider = subscribedWilayasProvider
-        val wilayas = resources.getStringArray(R.array.wilayas_array)
-        v.rv_wilayas.adapter = adapter
-        adapter.submitList(wilayas.toList())
         return v
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
+        wilayaSubscriptionViewModel = ViewModelProviders.of(this).get(WilayaSubscriptionViewModel::class.java)
+
+        view?.rv_wilayas?.layoutManager = LinearLayoutManager(context)
+        view?.rv_wilayas?.setHasFixedSize(true)
+
+        adapter = WilayaSubscriptionAdapter(listOf(*wilayaSubscriptionViewModel.subscribedWilayas.value!!.toTypedArray()))
+        adapter.onSubscriptionListener = onSubscribeListener
+//        adapter.subscribedWilayasProvider = subscribedWilayasProvider
+        val wilayas = resources.getStringArray(R.array.wilayas_array)
+        view?.rv_wilayas?.adapter = adapter
+        adapter.submitList(wilayas.toList())
+
+        wilayaSubscriptionViewModel.subscribedWilayas.observe(this, Observer {
+            adapter.subscribeWilayas = listOf(*it.toTypedArray())
+        })
         super.onActivityCreated(savedInstanceState)
     }
 

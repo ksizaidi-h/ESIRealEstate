@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class WilayaSubscriptionViewModel(application: Application) :AndroidViewModel(application) {
 
     val wilayaSubscriber = WilayaSubscriber(application.applicationContext)
-    val subscribedWilayas = wilayaSubscriber.subscribedWilayas.map { it.wilayaName }
+    val subscribedWilayas = wilayaSubscriber.wilayas
 
     fun subscribeToWilaya(wilaya : String){
         wilayaSubscriber.subscribeToWilaya(wilaya)

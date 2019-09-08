@@ -1,6 +1,7 @@
 package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,7 +20,8 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     fun getFavoritePosts(category : String){
-        posts  = realEstatePostsRepository.getPostsByCategory(category)
+        currentCategory.value = category
+        realEstatePostsRepository.getPostsByCategory(category)
     }
 
 }

@@ -33,4 +33,14 @@
             android:contentDescription="@string/open_in_browser"
             android:src="@drawable/ic_share_black_24dp" />
 
+    <ToggleButton
+            android:id="@+id/btn_bookmark"
+            android:layout_width="@dimen/action_button_size"
+            android:layout_height="@dimen/action_button_size"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/toggle_bookmark_selector"
+            android:textOff=""
+            android:textOn="" />
+
 </LinearLayout>

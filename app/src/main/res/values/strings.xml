@@ -138,6 +138,9 @@
     <string name="unsubscribe_toast">Vous ne suiver plus les aonnonces de %1$s</string>
     <string name="no_posts">Vous n\'avez sauvgarder aucun post dans la catégorie %1$s</string>
     <string name="view_details">Voir les détails</string>
+    <string name="my_bookmarks">Mes signets</string>
+    <string name="facebook_login">Facebook Login</string>
+    <string name="google_login">Google Login</string>
     <string name="retry">Réessayer</string>
     <string name="btn_retry_txt">Nous avons detecté que vous n\'êtes pas connecté. Veuillez verifier votre connexion et réessayer</string>
     <string name="offline_toast">Vous êtes hors connexion</string>

@@ -1,6 +1,7 @@
 package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details
 
 import android.Manifest
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -8,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -53,7 +55,6 @@ class ContactFragment : Fragment() {
         if (ContextCompat.checkSelfPermission(context!!,
                 Manifest.permission.CALL_PHONE)
             != PackageManager.PERMISSION_GRANTED) {
-
             // Permission is not granted
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!,
@@ -61,6 +62,25 @@ class ContactFragment : Fragment() {
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
+                AlertDialog.Builder(activity!!)
+                    .setTitle(getString(R.string.permission_required))
+                    .setMessage("L'application a besion de cette permission pour effectuer des appels téléphoniques")
+                    .setPositiveButton(getString(R.string.allow), object : DialogInterface.OnClickListener{
+                        override fun onClick(dialog: DialogInterface?, which: Int) {
+                            ActivityCompat.requestPermissions(activity!!,
+                                arrayOf(Manifest.permission.CALL_PHONE),
+                                42)
+                        }
+
+                    })
+                    .setNegativeButton(getString(R.string.deny), object : DialogInterface.OnClickListener{
+                        override fun onClick(p0: DialogInterface?, p1: Int) {
+                            p0?.dismiss()
+                        }
+
+                    })
+                    .create()
+                    .show()
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(activity!!,

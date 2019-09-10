@@ -142,6 +142,9 @@
     <string name="btn_retry_txt">Nous avons detecté que vous n\'êtes pas connecté. Veuillez verifier votre connexion et réessayer</string>
     <string name="offline_toast">Vous êtes hors connexion</string>
     <string name="online_toast">OK vous êtes maintenat connecté</string>
+    <string name="permission_required">Permission requise</string>
+    <string name="allow">Permettre</string>
+    <string name="deny">Refuser</string>
 
     <string-array name="wilayas_array">
         <item>Adrar</item>

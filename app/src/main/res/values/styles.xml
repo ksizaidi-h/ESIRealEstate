@@ -1,0 +1,40 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="TextLabel">
+        <item name="android:textColor">@color/default_text_color</item>
+        <item name="android:textSize">@dimen/default_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginTop">@dimen/post_description_info_spacing</item>
+    </style>
+
+    <style name="PriceText" parent="TextLabel">
+        <item name="android:textColor">@color/post_details_price_color</item>
+        <item name="android:textSize">@dimen/post_details_price_size</item>
+    </style>
+
+    <style name="EmptyList">
+        <item name="android:textColor">@color/empty_list_color</item>
+        <item name="android:textSize">@dimen/empty_list_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">@dimen/empty_list_margin</item>
+        <item name="android:layout_marginTop">@dimen/post_description_info_spacing</item>
+    </style>
+
+</resources>

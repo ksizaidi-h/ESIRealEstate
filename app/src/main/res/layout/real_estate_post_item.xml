@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        >
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/cardMargin"
+            android:padding="@dimen/cardPadding">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <ImageView
+                        android:id="@+id/iv_post_item"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/real_estate_picture_height"
+                        android:contentDescription="@string/post_item_picture_content_description" />
+                <TextView
+                        android:id="@+id/tv_post_item_price"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginBottom="4dp"
+                        android:text="@string/no_price"
+                        android:textSize="@dimen/price_post_item_text_size"
+                        android:textColor="@color/price_text_color"
+                        android:textStyle="bold"
+                        android:background="@color/tv_price_bg_color"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                    android:id="@+id/tv_post_item_wilaya"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/wilaya_text_size"
+                    android:textColor="@color/wilaya_text_color"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp" />
+
+            <TextView
+                    android:id="@+id/tv_description_post_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:textColor="@color/description_text_color"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

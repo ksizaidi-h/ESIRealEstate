@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "522911093450",
+    "firebase_url": "https://prjmobile-9ace8.firebaseio.com",
+    "project_id": "prjmobile-9ace8",
+    "storage_bucket": "prjmobile-9ace8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:522911093450:android:e5d844ce3c0507bd191a33",
+        "android_client_info": {
+          "package_name": "dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "522911093450-ppnu0pl1qhvfd3dps35ckjfo85hd1tg3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate",
+            "certificate_hash": "fc1b3d43cbf663aa79038a5fd48f8a4c7f8f1b38"
+          }
+        },
+        {
+          "client_id": "522911093450-0ojm9e0lf69ph60hnacv3m7e83o190vr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBT21GgpLMIpoPqfAis6HdwLcQQH9ORKS4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "522911093450-0ojm9e0lf69ph60hnacv3m7e83o190vr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

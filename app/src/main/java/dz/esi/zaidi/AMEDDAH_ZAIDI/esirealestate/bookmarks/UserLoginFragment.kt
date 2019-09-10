@@ -11,9 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
 import kotlinx.android.synthetic.main.user.*
@@ -52,12 +50,10 @@ class UserLoginFragment : AppCompatActivity(), View.OnClickListener {
     public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth!!.currentUser
-
 
         //TODO Check update UI
 
-        updateUI(currentUser)
+        updateUI(auth!!.uid)
 
 
 
@@ -106,7 +102,7 @@ class UserLoginFragment : AppCompatActivity(), View.OnClickListener {
                         .addOnSuccessListener { document ->
                             if (document.data != null) {
                                 Log.d(TAG, "DocumentSnapshot data: ${document.data}")
-                                updateUI(user)
+                                updateUI(userId)
                             } else {
                                 val userDb = hashMapOf(
                                     "userId" to userId
@@ -126,8 +122,7 @@ class UserLoginFragment : AppCompatActivity(), View.OnClickListener {
                             Log.d(TAG, "get failed with ", exception)
                         }
 
-
-                    updateUI(user)
+                    updateUI(userId)
                 } else {
                     Toast.makeText(this@UserLoginFragment, "Sign in failed", Toast.LENGTH_SHORT).show()
                     // If sign in fails, display a message to the user.
@@ -158,13 +153,14 @@ class UserLoginFragment : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    private fun updateUI(user: FirebaseUser?) {
+    private fun updateUI(user: String?) {
         /*
                 if the user is already signed (currentUser.toString() != null) then hide btn_google_login and show related data
                 else (currentUser.toString() == null ) leave the button after the user sign in successfully then hide btn_google_login and show related data
         */
-        if (user.toString() != null ){
-            // User already signed in Show bookmarks array
+        Log.e("UU", user.toString())
+        if (user.toString() != "null" ){
+            // User already signed in Show bookmarks array and hide button
             db.collection("users").document(auth!!.uid!!).get()
                 .addOnSuccessListener{ task ->
                     Log.e("BBookmarks", task.get("bookmarks").toString())

@@ -32,18 +32,8 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
         return page
     }
 
-    private fun getPostFromPge(info: Element): RealEstatePost {
+    private fun getPostFromPge(link : String): RealEstatePost {
 
-        val categoryRange = 1
-        val typeRage = 2
-        val linkRange = 3
-        val priceRage = 4
-
-        val values = info.select("td:nth-child(2n)")
-        val category = values[categoryRange].text()
-        val type = values[typeRage].text()
-        val link = baseUrl + values[linkRange].select("a").attr("href")
-        val price = values[priceRage].text()
 
         val insidePostPage = getDocument(link)
 
@@ -59,38 +49,36 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
 
         val labels = insidePostPage.select("td.da_label_field")
         val labelValues = insidePostPage.select("td.da_field_text")
-        var i = 0
-        var town = ""
-        var city = ""
+
+        val loc = insidePostPage.select(".da_field_text a[href*=cod_vil]")
+        val town = loc[0].text()
+        val city = loc[1].text()
+        Log.d(TAG + "/loc", "$town / $city")
+
+        val catType = insidePostPage.select(".da_field_text a[href*=cod_typ]")
+        val category = catType[0].text()
+        val type = catType[1].text()
+
         var address = ""
-        var surface = ""
-        var text = ""
-        for (label in labels) {
+        val labelText = labels.map { it.text() }
 
-            if (label.text() == "Localisation") {
-                val loc = labelValues[i].select("a")
-                town = loc[2].text()
-                city = loc[3].text()
-                Log.d(TAG + "/loc", "$town / $city")
-            }
-
-            if (label.text() == "Adresse") {
-                address = labelValues[i].text()
-                Log.d(TAG + "/addr", address)
-            }
-
-            if (label.text() == "Surface") {
-                surface = labelValues[i].text()
-                Log.d(TAG + "/surf", surface)
-            }
-
-            if (label.text() == "Texte") {
-                text = labelValues[i].text()
-                Log.d(TAG + "/text", text)
-            }
-
-            i++
+        if ("Adresse" in labelText){
+            address = labelValues[labelText.indexOf("Adresse")].text()
+            Log.d(TAG + "/addr", address)
         }
+
+        var surface = ""
+        if ("Surface" in labelText){
+            surface = labelValues[labelText.indexOf("Surface")].text()
+            Log.d(TAG + "/surf", surface)
+        }
+
+
+        var text = ""
+        text = labelValues[labelText.indexOf("Texte")].text()
+        Log.d(TAG + "/text", text)
+
+        val price = labelValues[labelText.indexOf("Prix")].text().replace("Dinar Algèrien (DA)","")
 
         //Retrieve pictures
         val pictures = insidePostPage.select("img.PhotoMin1")
@@ -117,11 +105,12 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
     override fun getRealEstatePosts(consumer: RealEstatePostsConsumer) {
         doAsync {
             val page = getDocument(baseUrl + "/AnnoncesImmobilier.asp?rech_order_by=11")
-            val infos = page.select(".Tableau1")
 
-            for (info in infos) {
-                val post = getPostFromPge(info)
-                 consumer.addPost(post)
+            val links = page.select("a[href*=cod_ann]").map { baseUrl + it.attr("href") }
+            for (link in links){
+             val post = getPostFromPge(link)
+                consumer.addPost(post)
+             Log.d("$TAG / Price ","${post.price}")
             }
 
         }
@@ -129,16 +118,14 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
     }
 
     override fun getNewPosts(consumer: NotificationConsumer, context: Context) {
-        val newPosts = ArrayList<RealEstatePost>()
+        val wilayaSubscriber = WilayaSubscriber(context)
         doAsync{
             val page = getDocument(baseUrl)
             val wilayaLinks = page.select("a[href*=cod_reg]")
 
-            val wilayaSubscriber = WilayaSubscriber(context)
 
-            val wilayaNames = wilayaSubscriber.subscribedWilayas.map { it.wilayaName }.toList()
             val filteredLinks = wilayaLinks.filter {
-                it.text().replace("\\([0-9]+\\)".toRegex(),"").trim() in wilayaNames
+                it.text().replace("\\([0-9]+\\)".toRegex(),"").trim() in wilayaSubscriber.subscribedWilayas.map { it.wilayaName }
             }
 
             for (link in filteredLinks) {
@@ -147,6 +134,7 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
 
                 val value = baseUrl + link.attr("href") + "&rech_order_by=11"
                 Log.d(TAG ,"getNewPosts : wilayaLink : $value")
+
                 val wilayaPage = getDocument(value)
                 val lastPosted = baseUrl + wilayaPage.select("a[href*=cod_ann]").first().attr("href")
                 Log.d(TAG,"getNewPosts : lastPosted $wilayaName : $lastPosted")
@@ -160,8 +148,7 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
                 } else if (wilayaSubscriber.subscribedWilayas[indexOfWilaya].lastLink != lastPosted) {
                     wilayaSubscriber.subscribedWilayas[indexOfWilaya].lastLink = lastPosted
                     wilayaSubscriber.saveChanges()
-                    val lastPostInfos = wilayaPage.select(".Tableau1").first()
-                    val post = getPostFromPge(lastPostInfos)
+                    val post = getPostFromPge(lastPosted)
                     Log.d(TAG,"getNewPosts : should show a notification for  $wilayaName ${post}")
                     uiThread {
                         consumer.makeNotification(post)

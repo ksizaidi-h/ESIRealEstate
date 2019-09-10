@@ -17,14 +17,14 @@ import kotlinx.android.synthetic.main.posts_list_fragment.view.*
 class FavoriteFragment : Fragment() {
 
     lateinit var viewModel: FavoritesViewModel
-    private lateinit var adapter : PostsAdapter
+    private lateinit var adapter: PostsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       val v = inflater.inflate(R.layout.favorite_list_fragment, container, false)
+        val v = inflater.inflate(R.layout.favorite_list_fragment, container, false)
 
         v.rv_favorite.layoutManager = LinearLayoutManager(context)
         v.rv_favorite.setHasFixedSize(false)
@@ -37,21 +37,21 @@ class FavoriteFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         viewModel = ViewModelProviders.of(activity!!).get(FavoritesViewModel::class.java)
-        viewModel.currentCategory.observe(this, Observer {
-            empty_view.text = getString(R.string.no_posts,it)
+        viewModel.currentCategory.observe(activity!!, Observer {
+            view?.empty_view?.text = getString(R.string.no_posts, it)
         })
-        viewModel.posts.observe(this, Observer {
-            posts ->
+        viewModel.posts.observe(activity!!, Observer { posts ->
             run {
-                adapter.submitList(posts)
+                Log.d("Posts : ${viewModel.currentCategory.value}", "${posts}")
+                adapter.submitList(listOf(*posts.toTypedArray()))
                 if (posts.isNullOrEmpty()) {
                     Log.d("FavoriteFragment", "empty")
-                    rv_favorite.visibility = View.GONE
-                    empty_view.visibility = View.VISIBLE
+                    view?.rv_favorite?.visibility = View.GONE
+                    view?.empty_view?.visibility = View.VISIBLE
                 } else {
                     Log.d("FavoriteFragment", "not empty")
-                    rv_favorite.visibility = View.VISIBLE
-                    empty_view.visibility = View.GONE
+                    view?.rv_favorite?.visibility = View.VISIBLE
+                    view?.empty_view?.visibility = View.GONE
                 }
             }
         }

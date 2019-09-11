@@ -31,6 +31,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".bookmarks.UserLoginFragment" />
+        <activity android:name=".post_details.contacts.ContactsChoose" />
+
         <service android:name=".subscription_service.WilayaSubscriptionService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
         <receiver android:name=".subscription_service.WilayaSubscriptionServiceReceiver"

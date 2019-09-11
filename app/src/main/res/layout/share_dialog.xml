@@ -1,8 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffff">
 
+    <ImageButton
+            android:id="@+id/btn_message"
+            android:layout_width="@dimen/bottom_sharing_sheet_btn_size"
+            android:layout_height="@dimen/bottom_sharing_sheet_btn_size"
+            android:contentDescription="@string/send_by_sms"
+           android:background="@drawable/ic_message"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btns_guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/btns_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
+    <ImageButton
+            android:id="@+id/btn_email"
+            android:layout_width="@dimen/bottom_sharing_sheet_btn_size"
+            android:layout_height="@dimen/bottom_sharing_sheet_btn_size"
+            android:background="@drawable/ic_email"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/btns_guideline"
+            android:contentDescription="@string/send_by_sms" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

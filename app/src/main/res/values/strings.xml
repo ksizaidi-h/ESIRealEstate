@@ -148,6 +148,8 @@
     <string name="permission_required">Permission requise</string>
     <string name="allow">Permettre</string>
     <string name="deny">Refuser</string>
+    <string name="send_by_sms">Envoyer le lien de l\'annonce par SMS</string>
+    <string name="send">Envoyer</string>
 
     <string-array name="wilayas_array">
         <item>Adrar</item>

@@ -15,4 +15,5 @@
     <dimen name="action_button_size">30dp</dimen>
     <dimen name="empty_list_text_size">18sp</dimen>
     <dimen name="empty_list_margin">16dp</dimen>
+    <dimen name="bottom_sharing_sheet_btn_size">50dp</dimen>
 </resources>

@@ -13,8 +13,10 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
 import kotlinx.android.synthetic.main.user.*
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.User
+
+
 
 
 
@@ -34,7 +36,7 @@ class UserLoginFragment : AppCompatActivity(), View.OnClickListener {
         btn_login_google.setOnClickListener(this)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestIdToken(getString(dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R.string.default_web_client_id))
             .requestEmail()
             .build()
         // [END config_signin]
@@ -94,14 +96,16 @@ class UserLoginFragment : AppCompatActivity(), View.OnClickListener {
                     Log.d(TAG, "signInWithCredential:success")
 
                     val userId = auth!!.uid
-                    val user = auth!!.currentUser
+                    val email = auth!!.currentUser!!.email
 
+                    User.email = email!!
+                    User.isLoggedIn = true
 
                     db.collection("users").document(userId!!)
                         .get()
                         .addOnSuccessListener { document ->
                             if (document.data != null) {
-                                Log.d(TAG, "DocumentSnapshot data: ${document.data}")
+                                Log.d(TAG, "user exist in Db showing links now")
                                 updateUI(userId)
                             } else {
                                 val userDb = hashMapOf(
@@ -158,15 +162,15 @@ class UserLoginFragment : AppCompatActivity(), View.OnClickListener {
                 if the user is already signed (currentUser.toString() != null) then hide btn_google_login and show related data
                 else (currentUser.toString() == null ) leave the button after the user sign in successfully then hide btn_google_login and show related data
         */
-        Log.e("UU", user.toString())
         if (user.toString() != "null" ){
             // User already signed in Show bookmarks array and hide button
             db.collection("users").document(auth!!.uid!!).get()
                 .addOnSuccessListener{ task ->
-                    Log.e("BBookmarks", task.get("bookmarks").toString())
+                    User.links = task.get("bookmarks") as ArrayList<String>
+
                 }
                 .addOnFailureListener { e ->
-                    Log.w(TAG, "Error adding document", e)
+                    Log.d(TAG, "Error adding document", e)
                 }
         }
         else {

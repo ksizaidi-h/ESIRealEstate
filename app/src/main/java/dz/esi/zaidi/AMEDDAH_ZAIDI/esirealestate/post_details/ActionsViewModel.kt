@@ -10,7 +10,7 @@ import androidx.lifecycle.AndroidViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks.UserLoginFragment
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.User
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePost
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePostsRepository
 
@@ -30,28 +30,28 @@ class ActionsViewModel(application: Application) : AndroidViewModel(application)
 
     fun bookmarkLink(link : String){
         if (auth.uid == null) {
-            //TODO if user not logged in, he must go to the UserLoginFragment by intent
-            Log.e("hello","user no signed in ")
+            Log.w("hello","user no signed in ")
         }
         else {
             db
                 .collection("users")
                 .document(auth.uid!!)
                 .update("bookmarks", FieldValue.arrayUnion(link))
+            User.links.add(link)
         }
 
     }
 
     fun unBookmarkLink(link : String){
         if (auth.uid == null) {
-            //TODO if user not logged in, he must go to the UserLoginFragment by intent
-            Log.e("hello","user no signed in ")
+            Log.w("hello","user no signed in ")
         }
         else {
             db
                 .collection("users")
                 .document(auth.uid!!)
                 .update("bookmarks", FieldValue.arrayRemove(link))
+            User.links.remove(link)
         }
 
     }

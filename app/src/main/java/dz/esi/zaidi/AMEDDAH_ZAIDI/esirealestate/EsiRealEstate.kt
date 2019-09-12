@@ -9,6 +9,9 @@ import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service.WilayaSubsc
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks.UserLoginFragment
 
 
 class EsiRealEstate : Application() {
@@ -36,6 +39,21 @@ class EsiRealEstate : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        var auth = FirebaseAuth.getInstance()
+        var db = FirebaseFirestore.getInstance()
+
+        if (auth.uid!!.toString() != "null"){
+            User.isLoggedIn=true
+            db.collection("users").document(auth!!.uid!!).get()
+                .addOnSuccessListener{ task ->
+                    User.links = task.get("bookmarks") as ArrayList<String>
+
+                }
+                .addOnFailureListener { e ->
+                    Log.d("Error adding document", "error")
+                }
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel(

@@ -4,17 +4,11 @@
         android:layout_height="match_parent"
         android:gravity="center">
 
-    <Button
-            android:id="@+id/btn_login_facebook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/facebook_login"
-            android:layout_marginBottom="30dp"/>
-
-    <Button
+    <com.google.android.gms.common.SignInButton
             android:id="@+id/btn_login_google"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/google_login"/>
+            android:layout_width="216dp"
+            android:layout_height="wrap_content"/>
+
+
 
 </LinearLayout>

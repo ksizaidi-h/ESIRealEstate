@@ -28,6 +28,11 @@
     <string name="contact_label">Contact : </string>
     <string name="phone_number">%1$s</string>
 
+    <string name="facebook_app_id">427109554592172</string>
+    <string name="fb_login_protocol_scheme">fb427109554592172</string>
+
+
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.User
+import kotlinx.android.synthetic.main.actions_fragment.*
 import kotlinx.android.synthetic.main.actions_fragment.view.*
 
 class ActionsFragment : Fragment() {
@@ -66,14 +68,18 @@ class ActionsFragment : Fragment() {
                 Toast.makeText(context,"Post removed from favorite",Toast.LENGTH_SHORT).show()
             }
         }
-
-        v.btn_favorites.setOnClickListener {
-            if (it.btn_favorites.isChecked){
-                actionsViewModel.bookmarkLink(link)
-                Toast.makeText(context,"Post added to favorite",Toast.LENGTH_SHORT).show()
-            }else{
-                actionsViewModel.unBookmarkLink(link)
-                Toast.makeText(context,"Post removed from favorite",Toast.LENGTH_SHORT).show()
+        if(!User.isLoggedIn){
+            v.btn_bookmark.isEnabled = false
+        }else{
+            v.btn_bookmark.isChecked = link in User.links
+            v.btn_bookmark.setOnClickListener {
+                if (it.btn_bookmark.isChecked){
+                    actionsViewModel.bookmarkLink(link)
+                    Toast.makeText(context,"Post added to favorite",Toast.LENGTH_SHORT).show()
+                }else{
+                    actionsViewModel.unBookmarkLink(link)
+                    Toast.makeText(context,"Post removed from favorite",Toast.LENGTH_SHORT).show()
+                }
             }
         }
 

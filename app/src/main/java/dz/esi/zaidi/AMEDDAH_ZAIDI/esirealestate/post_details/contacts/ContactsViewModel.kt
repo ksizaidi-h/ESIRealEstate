@@ -4,16 +4,20 @@ import android.app.Application
 import android.content.res.TypedArray
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 class ContactsViewModel(application: Application) : AndroidViewModel(application){
 
-    private lateinit var contacts : List<Contact>
-    private val chosenContacts = ArrayList<Contact>()
+    val contacts : Set<Contact>
+
+    private val chosenContacts = HashSet<Contact>()
     private val context = application.applicationContext
 
     init {
         val resolver = ContactsResolver(context)
-        contacts = resolver.getContacts()
+        contacts = HashSet(resolver.getContacts())
     }
 
     fun addContactToChosen(contact: Contact){
@@ -24,8 +28,8 @@ class ContactsViewModel(application: Application) : AndroidViewModel(application
         chosenContacts.remove(contact)
     }
 
-    fun getCurrentChosen() : Array<Contact>{
-        return chosenContacts.toTypedArray()
+    fun getCurrentChosen() : List<Contact>{
+        return chosenContacts.toList()
     }
 
 

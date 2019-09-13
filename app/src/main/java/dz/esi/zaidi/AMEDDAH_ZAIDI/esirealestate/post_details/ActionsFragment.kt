@@ -20,6 +20,7 @@ class ActionsFragment : Fragment() {
     companion object{
 
         const val LINK = "dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.ActionsFragment.Phone"
+        private const val TAG = "SharingBottomSheet"
 
 
         fun newInstance(link : String) : ActionsFragment {
@@ -75,6 +76,11 @@ class ActionsFragment : Fragment() {
                 actionsViewModel.unBookmarkLink(link)
                 Toast.makeText(context,"Post removed from favorite",Toast.LENGTH_SHORT).show()
             }
+        }
+
+        v.btn_share_post.setOnClickListener {
+            val sharingBottomSheet = SharingBottomSheet(link)
+            sharingBottomSheet.show(activity!!.supportFragmentManager, TAG)
         }
 
 

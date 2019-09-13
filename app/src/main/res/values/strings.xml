@@ -27,6 +27,7 @@
 
     <string name="contact_label">Contact : </string>
     <string name="phone_number">%1$s</string>
+    <string name="message_body">Cette annonce pourait vous intéresser %1$s</string>
 
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -150,6 +151,7 @@
     <string name="deny">Refuser</string>
     <string name="send_by_sms">Envoyer le lien de l\'annonce par SMS</string>
     <string name="send">Envoyer</string>
+    <string name="sms_rational">L\'application a besion de cette permission pour envoyer des SMS</string>
 
     <string-array name="wilayas_array">
         <item>Adrar</item>

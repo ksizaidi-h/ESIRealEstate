@@ -1,10 +1,12 @@
 package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details
 
 import android.Manifest
+import android.app.Activity
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,15 +18,19 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.contacts.ContactsChoose
 import kotlinx.android.synthetic.main.share_dialog.view.*
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.EasyPermissions
+import pub.devrel.easypermissions.PermissionRequest
 
-class SharingBottomSheet : BottomSheetDialogFragment() {
+class SharingBottomSheet(val link : String) : BottomSheetDialogFragment() {
 
     companion object{
         const val SEND_MESSAGES_REQUEST_CODE = 0
         const val SEND_EMAILS_REQUEST_CODE = 1
+        private const val READ_CONTACTS_AND_SEND_SMS = 50
+        private const val TAG = "SharingBottomSheet"
     }
 
-    lateinit var sharingDialogListener: SharingDialogListener
     private lateinit var sharingViewModel: SharingPostViewModel
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,84 +46,69 @@ class SharingBottomSheet : BottomSheetDialogFragment() {
         sharingViewModel = ViewModelProviders.of(this).get(SharingPostViewModel::class.java)
 
         view?.btn_message?.setOnClickListener {
-            checkPermission(SEND_MESSAGES_REQUEST_CODE)
+            sendSms()
+            //this.dismiss()
         }
 
         view?.btn_email?.setOnClickListener {
-            checkPermission(SEND_EMAILS_REQUEST_CODE)
+            sendEmails()
+            //this.dismiss()
+
         }
 
         super.onActivityCreated(savedInstanceState)
     }
 
-
-    fun checkPermission(requestCode : Int) {
-        if (ContextCompat.checkSelfPermission(context!!,
-                Manifest.permission.CALL_PHONE)
-            != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!,
-                    Manifest.permission.CALL_PHONE)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                AlertDialog.Builder(activity!!)
-                    .setTitle(getString(R.string.permission_required))
-                    .setMessage("L'application a besion de cette permission pour effectuer des appels téléphoniques")
-                    .setPositiveButton(getString(R.string.allow), object : DialogInterface.OnClickListener{
-                        override fun onClick(dialog: DialogInterface?, which: Int) {
-                            ActivityCompat.requestPermissions(activity!!,
-                                arrayOf(Manifest.permission.CALL_PHONE),
-                                42)
-                        }
-
-                    })
-                    .setNegativeButton(getString(R.string.deny), object : DialogInterface.OnClickListener{
-                        override fun onClick(p0: DialogInterface?, p1: Int) {
-                            p0?.dismiss()
-                        }
-
-                    })
-                    .create()
-                    .show()
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(activity!!,
-                    arrayOf(Manifest.permission.CALL_PHONE),
-                    42)
-            }
-        } else {
-            // Permission has already been granted
-            chooseContacts(requestCode)
+    @AfterPermissionGranted(READ_CONTACTS_AND_SEND_SMS)
+    private fun sendSms(){
+        val perms = arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.SEND_SMS)
+        if(EasyPermissions.hasPermissions(activity!!, *perms)){
+            Log.d(TAG,"sendSms")
+            chooseContacts(SEND_MESSAGES_REQUEST_CODE)
+        }else{
+            EasyPermissions.requestPermissions(
+                PermissionRequest.Builder(activity!!, READ_CONTACTS_AND_SEND_SMS ,*perms)
+                    .setRationale(R.string.sms_rational)
+                    .setPositiveButtonText(R.string.allow)
+                    .setNegativeButtonText(R.string.deny)
+                    .build())
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>, grantResults: IntArray)  {
-        if ((requestCode == SEND_MESSAGES_REQUEST_CODE) or (requestCode == SEND_EMAILS_REQUEST_CODE)) {
-            // If request is cancelled, the result arrays are empty.
-            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                // permission was granted, yay!
-                chooseContacts(requestCode)
-            } else {
-                // permission denied, boo! Disable the
-                // functionality
+    private fun sendEmails(){
+        chooseContacts(SEND_EMAILS_REQUEST_CODE)
+    }
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray)  {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode,permissions,grantResults,activity)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.d(TAG,"onActivityResult : $resultCode")
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK){
+            val chosenContacts = data?.getStringArrayExtra(ContactsChoose.CHOSEN_CONTACTS_EXTRA)
+            if (requestCode == SEND_EMAILS_REQUEST_CODE){
+                sharingViewModel.sendEmails(chosenContacts!!.toList(), getString(R.string.message_body,link))
+            }else {
+                sharingViewModel.sendMessages(chosenContacts!!.toList(),getString(R.string.message_body,link))
             }
-            return
+            this.dismiss()
         }
+
     }
 
     fun chooseContacts(requestCode : Int){
-        val intent = Intent(activity,
-            ContactsChoose::class.java)
+        val intent = if(requestCode == SEND_EMAILS_REQUEST_CODE) {
+            ContactsChoose.getIntent(activity!!,true)
+        }else{
+            ContactsChoose.getIntent(activity!!,false)
+        }
         startActivityForResult(intent, requestCode)
     }
 
 
-    interface SharingDialogListener {
-        fun onMessagesClicked()
-        fun onEmailClicked()
-    }
 
 }

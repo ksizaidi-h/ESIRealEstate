@@ -80,6 +80,10 @@ dependencies {
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    //Easy Permissions
+
+    implementation 'pub.devrel:easypermissions:3.0.0'
+
     //Recycler view
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'

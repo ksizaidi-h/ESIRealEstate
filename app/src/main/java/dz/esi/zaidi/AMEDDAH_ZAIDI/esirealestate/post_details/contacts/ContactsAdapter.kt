@@ -8,8 +8,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
 import kotlinx.android.synthetic.main.contacts_choose_item.view.*
+import java.util.*
 
 class ContactsAdapter : ListAdapter<Contact, ContactsAdapter.ContactsViewHolder>(DIFF_CALLBACK){
+
+    var chosenContacts = HashSet<Contact>()
 
     companion object{
         private val DIFF_CALLBACK  = object : DiffUtil.ItemCallback<Contact>(){
@@ -27,7 +30,7 @@ class ContactsAdapter : ListAdapter<Contact, ContactsAdapter.ContactsViewHolder>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactsViewHolder {
        return  ContactsViewHolder(
            LayoutInflater.from(parent.context).inflate(R.layout.contacts_choose_item, parent,false)
-           ,onAddButtonClickListener)
+           ,onAddButtonClickListener,chosenContacts)
     }
 
     override fun onBindViewHolder(holder: ContactsViewHolder, position: Int) {
@@ -36,10 +39,11 @@ class ContactsAdapter : ListAdapter<Contact, ContactsAdapter.ContactsViewHolder>
 
     lateinit var onAddButtonClickListener: OnAddButtonClickListener
 
-    class ContactsViewHolder(itemView: View,val onAddButtonClickListener: OnAddButtonClickListener) : RecyclerView.ViewHolder(itemView){
+    class ContactsViewHolder(itemView: View,val onAddButtonClickListener: OnAddButtonClickListener, val chosen : Set<Contact>) : RecyclerView.ViewHolder(itemView){
 
         fun bind(item : Contact) = with(itemView){
             itemView.tv_contact_item.text = item.displayName
+            itemView.btn_add_contact.isChecked =  item in chosen
             itemView.btn_add_contact.setOnClickListener {
                 if(itemView.btn_add_contact.isChecked){
                     onAddButtonClickListener.addContactToList(item)

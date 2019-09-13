@@ -9,4 +9,8 @@ data class Contact(val id : Int, val phone : String, val displayName : String, v
     override fun hashCode(): Int {
         return id
     }
+
+    override fun toString(): String {
+        return displayName
+    }
 }

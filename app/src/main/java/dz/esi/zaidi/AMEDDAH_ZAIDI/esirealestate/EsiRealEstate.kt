@@ -47,7 +47,7 @@ class EsiRealEstate : Application() {
             User.isLoggedIn=true
             db.collection("users").document(auth!!.uid!!).get()
                 .addOnSuccessListener{ task ->
-                    User.links = task.get("bookmarks") as ArrayList<String>
+                    User.links =  if(task.get("bookmarks") == null) ArrayList<String>() else task.get("bookmarks" ) as ArrayList<String>
 
                 }
                 .addOnFailureListener { e ->

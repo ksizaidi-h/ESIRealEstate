@@ -39,7 +39,7 @@ class UserLoginFragment : AppCompatActivity(), View.OnClickListener {
             .requestIdToken(getString(dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R.string.default_web_client_id))
             .requestEmail()
             .build()
-        // [END config_signin]
+        // [END config_signin
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
@@ -105,7 +105,7 @@ class UserLoginFragment : AppCompatActivity(), View.OnClickListener {
                         .get()
                         .addOnSuccessListener { document ->
                             if (document.data != null) {
-                                Log.d(TAG, "user exist in Db showing links now")
+                                Log.d( "PPP",document.data.toString())
                                 updateUI(userId)
                             } else {
                                 val userDb = hashMapOf(
@@ -166,7 +166,7 @@ class UserLoginFragment : AppCompatActivity(), View.OnClickListener {
             // User already signed in Show bookmarks array and hide button
             db.collection("users").document(auth!!.uid!!).get()
                 .addOnSuccessListener{ task ->
-                    User.links = task.get("bookmarks") as ArrayList<String>
+                   User.links =  if(task.get("bookmarks") == null) ArrayList<String>() else task.get("bookmarks" ) as ArrayList<String>
 
                 }
                 .addOnFailureListener { e ->

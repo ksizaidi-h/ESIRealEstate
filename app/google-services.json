@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "522911093450-m762m2i54tgqt62rstptbhc4uklko3pr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate",
+            "certificate_hash": "d2e45c1a8a306541132182722b8b1cf61daa9c89"
+          }
+        },
+        {
           "client_id": "522911093450-ppnu0pl1qhvfd3dps35ckjfo85hd1tg3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

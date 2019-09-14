@@ -25,6 +25,7 @@
             android:contentDescription="@string/open_in_browser"
             android:src="@drawable/ic_open_in_browser_black_24dp" />
     <ImageButton
+            android:id="@+id/btn_share_post"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="@dimen/action_button_size"
             android:layout_height="@dimen/action_button_size"

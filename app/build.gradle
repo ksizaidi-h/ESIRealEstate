@@ -101,6 +101,21 @@ dependencies {
     //implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
     apply plugin: 'com.google.gms.google-services'
 
+    //Gmail API
+
+    implementation 'com.google.apis:google-api-services-gmail:v1-rev105-1.25.0'
+    implementation('com.google.api-client:google-api-client-android:1.23.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+
+    // https://mvnrepository.com/artifact/javax.mail/mail
+    implementation group: 'javax.mail', name: 'mail', version: '1.4.1'
+
+
+    compile files('libs/mail.jar')
+    compile files('libs/activation.jar')
+    compile files('libs/additionnal.jar')
+
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:1.10.19'
     androidTestImplementation 'androidx.test:rules:1.2.0'

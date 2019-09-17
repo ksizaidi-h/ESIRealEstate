@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.api.client.extensions.android.http.AndroidHttp
+import com.google.api.client.googleapis.extensions.android.accounts.GoogleAccountManager
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.client.util.Base64
@@ -98,7 +99,8 @@ class GmailClientMailSender(val context: Context) : IMailSender {
             throw NotConnectedException(context)
         } else {
             val senderEmail = "me"
-            mCredential.setSelectedAccountName(User.email)
+            val accountManager = GoogleAccountManager(context)
+            mCredential.selectedAccount = accountManager.getAccountByName(User.email)
             val service = Gmail.Builder(
                 AndroidHttp.newCompatibleTransport(),
                 JacksonFactory.getDefaultInstance(),
@@ -107,9 +109,9 @@ class GmailClientMailSender(val context: Context) : IMailSender {
                 .setApplicationName(context.resources.getString(R.string.app_name))
                 .build()
             isSending.postValue(true)
-            for (i in 0..15) {
+            for (mailTo in emails) {
                 val email = createEmail(
-                    "hamza.kmsi@gmail.com",
+                    mailTo,
                     senderEmail,
                     context.getString(R.string.mail_subject),
                     message

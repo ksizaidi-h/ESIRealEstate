@@ -67,11 +67,12 @@ class ContactsViewModel(application: Application) : AndroidViewModel(application
 
         }
     }
-//
-//    fun sendMessages(){
-//        smsSender.sendMessages(phoneNumbers, message)
-//        Log.i(TAG,"sendMessages $phoneNumbers")
-//    }
+
+    fun sendMessages(link : String){
+        val phoneNumbers = chosenContacts.map { it.phone }
+        smsSender.sendMessages(phoneNumbers, context.getString(R.string.message_body,link))
+        Log.i(TAG,"sendMessages $phoneNumbers")
+    }
 
 
 }

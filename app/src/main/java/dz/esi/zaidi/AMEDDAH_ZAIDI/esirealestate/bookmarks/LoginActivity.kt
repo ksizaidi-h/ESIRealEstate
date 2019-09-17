@@ -20,7 +20,7 @@ import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.User
 
 
 
-class UserLoginFragment : AppCompatActivity(), View.OnClickListener {
+class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var auth : FirebaseAuth
     private lateinit var db : FirebaseFirestore
@@ -121,7 +121,7 @@ class UserLoginFragment : AppCompatActivity(), View.OnClickListener {
                                         Log.w(TAG, "Error adding document", e)
                                     }
                             }
-                            Toast.makeText(this@UserLoginFragment, "Sign in success", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@LoginActivity, "Sign in success", Toast.LENGTH_SHORT).show()
                         }
                         .addOnFailureListener { exception ->
                             Log.d(TAG, "get failed with ", exception)
@@ -129,7 +129,7 @@ class UserLoginFragment : AppCompatActivity(), View.OnClickListener {
 
                     updateUI(userId)
                 } else {
-                    Toast.makeText(this@UserLoginFragment, "Sign in failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@LoginActivity, "Sign in failed", Toast.LENGTH_SHORT).show()
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
                     updateUI(null)

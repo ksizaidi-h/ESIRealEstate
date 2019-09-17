@@ -1,5 +1,6 @@
 package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,25 +13,28 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.navigation.NavigationView
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks.UserLoginFragment
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks.BookMarksViewModel
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks.BookmarksFragment
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks.LoginActivity
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.*
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service.WilayaSubscriptionFragment
 
 //import java.util.*
 
-class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
 
-    private lateinit var postsListViewModel : PostsListViewModel
+    private lateinit var postsListViewModel: PostsListViewModel
     private lateinit var drawer: DrawerLayout
-    private lateinit var navigationView : NavigationView
+    private lateinit var navigationView: NavigationView
     private lateinit var postsListFragment: PostsListFragment
     private val favoriteFragment = FavoriteFragment()
-    private lateinit var favoritesViewModel : FavoritesViewModel
+    private lateinit var favoritesViewModel: FavoritesViewModel
     private val viewStack = ViewStack()
     private var currentView = HOME
+    private lateinit var bookMarksViewModel: BookMarksViewModel
 
-    companion object{
+    companion object {
         private const val HOME = "Home"
         private const val SELL = "Sell"
         private const val RENT = "Rent"
@@ -39,6 +43,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         private const val SELL_CATEGORY = "Vente"
         private const val RENT_CATEGORY = "Location"
         private const val HOLIDAY_CATEGORY = "Location vacance"
+        private const val LOGIN_REQUEST = 78
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,6 +52,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
 
         postsListViewModel = ViewModelProviders.of(this).get(PostsListViewModel::class.java)
         favoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel::class.java)
+        bookMarksViewModel = ViewModelProviders.of(this).get(BookMarksViewModel::class.java)
 
         val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
         setSupportActionBar(toolbar)
@@ -68,7 +74,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
 
         postsListFragment = PostsListFragment()
 
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.fragment_container, postsListFragment)
@@ -79,9 +85,8 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     }
 
 
-
-    private fun showView(view : String){
-        when(view){
+    private fun showView(view: String) {
+        when (view) {
             HOME -> {
                 supportActionBar?.title = getString(R.string.home)
                 postsListViewModel.fetchNewPosts()
@@ -93,7 +98,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                 supportActionBar?.title = getString(R.string.sale)
                 favoritesViewModel.getFavoritePosts(SELL_CATEGORY)
                 showFragment(favoriteFragment)
-                    navigationView.setCheckedItem(R.id.nav_sale)
+                navigationView.setCheckedItem(R.id.nav_sale)
 
             }
 
@@ -112,6 +117,14 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                 navigationView.setCheckedItem(R.id.nav_holiday)
             }
 
+            BOOKMARK -> {
+                supportActionBar?.title = getString(R.string.my_bookmarks)
+                bookMarksViewModel.getBookMarkedPosts()
+                showFragment(BookmarksFragment())
+                navigationView.setCheckedItem(R.id.nav_bookmark)
+
+            }
+
         }
 
 
@@ -119,12 +132,12 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-        when(item.itemId){
+        when (item.itemId) {
             R.id.nav_home -> {
                 showView(HOME)
                 changeCurrentView(HOME)
             }
-            R.id.nav_sale ->{
+            R.id.nav_sale -> {
                 showView(SELL)
                 changeCurrentView(SELL)
 
@@ -141,7 +154,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
             }
 
             R.id.nav_subscribe -> {
-                if(viewStack.isEmpty()) viewStack.push(HOME)
+                if (viewStack.isEmpty()) viewStack.push(HOME)
                 showFragment(WilayaSubscriptionFragment())
                 navigationView.setCheckedItem(item.itemId)
                 supportActionBar?.title = getString(R.string.subscribe)
@@ -149,8 +162,13 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
             }
 
             R.id.nav_bookmark -> {
-                val intent = Intent(this, UserLoginFragment::class.java)
-                startActivity(intent)
+                if (User.isLoggedIn) {
+                    showView(BOOKMARK)
+                    changeCurrentView(BOOKMARK)
+                } else {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivityForResult(intent, LOGIN_REQUEST)
+                }
             }
 
         }
@@ -160,11 +178,11 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         return true
     }
 
-    private fun changeCurrentView(view : String){
-        if(currentView != view){
-            if(viewStack.isEmpty()) {
+    private fun changeCurrentView(view: String) {
+        if (currentView != view) {
+            if (viewStack.isEmpty()) {
                 viewStack.push(HOME)
-            }else{
+            } else {
                 viewStack.push(currentView)
             }
             currentView = view
@@ -172,17 +190,17 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     }
 
     override fun onBackPressed() {
-        if(drawer.isDrawerOpen(GravityCompat.START)){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
-        }else if ((viewStack.isEmpty())) {
+        } else if ((viewStack.isEmpty())) {
             super.onBackPressed()
-        }else{
+        } else {
             showView(viewStack.pop())
             Log.d("viewStack", viewStack.toString())
         }
     }
 
-    private fun showFragment(fragment: Fragment){
+    private fun showFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container, fragment)
@@ -190,6 +208,16 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
     }
 
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == LOGIN_REQUEST) {
+            if (resultCode == Activity.RESULT_OK){
+                showFragment(BookmarksFragment())
+            }
+        }
+
+    }
 
 
 }

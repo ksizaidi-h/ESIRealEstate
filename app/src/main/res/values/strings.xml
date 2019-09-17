@@ -159,6 +159,7 @@
     <string name="sms_rational">L\'application a besion de cette permission pour envoyer des SMS</string>
     <string name="not_connected_message">Vous n\'êtes pas connecté. Veuillez vous connecter pui réessayer</string>
     <string name="mail_subject">Un annonce immobilière qui peut vous intresser</string>
+    <string name="sending_emails">Envoid des emails en cours</string>
 
     <string-array name="wilayas_array">
         <item>Adrar</item>

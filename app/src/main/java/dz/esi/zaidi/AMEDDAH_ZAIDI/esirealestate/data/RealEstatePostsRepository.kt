@@ -9,6 +9,7 @@ import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.Utils
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.DataBase.RealEstateDatabase
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.DataBase.RealEstatePostDAO
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data_sources.AlgerieAnnonceWebsite
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data_sources.BookmarkedRealEstatePostsProvider
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data_sources.RealEstatePostsConsumer
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data_sources.RealEstateWebSite
 import org.jetbrains.anko.doAsync
@@ -24,9 +25,11 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
     var favoritePosts : MutableLiveData<List<RealEstatePost>>
     val context: Context = application.applicationContext
 
+
     private val postsSources = arrayOf<RealEstateWebSite>(
         /*AlgerimmoWebSite(),*/ AlgerieAnnonceWebsite()
     )
+
     var posts = MutableLiveData<List<RealEstatePost>>()
 
     init {
@@ -37,6 +40,7 @@ class RealEstatePostsRepository(application: Application) : RealEstatePostsConsu
         postsCache = ArrayList<RealEstatePost>()
         favoritePosts = MutableLiveData<List<RealEstatePost>>()
         isOnline.value = false
+
     }
 
     fun fetchPosts(){

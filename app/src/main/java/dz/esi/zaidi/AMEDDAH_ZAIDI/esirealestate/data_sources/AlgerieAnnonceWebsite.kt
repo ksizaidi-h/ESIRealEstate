@@ -3,6 +3,7 @@ package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data_sources
 
 import android.content.Context
 import android.util.Log
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.User
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.Localisation
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePost
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePoster
@@ -13,7 +14,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 
-class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
+class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider, BookmarkedRealEstatePostsProvider {
 
     companion object {
         private const val baseUrl = "http://www.annonce-algerie.com/"
@@ -159,5 +160,18 @@ class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider {
                 }
             }
         }
+
+
+    }
+
+    override fun getBookmarkedPosts(consumer: RealEstatePostsConsumer) {
+        val links = User.links
+        doAsync {
+            for (link in links){
+                val post = getPostFromPge(link)
+                consumer.addPost(post)
+            }
+        }
+
     }
 }

@@ -78,7 +78,7 @@ class AlgerimmoWebSite() : RealEstateWebSite {
                             )
                             consumer.addPost(post)
                         }
-                        //realEstatePostsRepository.posts.postValue(posts)
+                        //bookmarksRepository.posts.postValue(posts)
 
                     }
                 }

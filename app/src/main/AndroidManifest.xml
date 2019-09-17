@@ -30,7 +30,7 @@
         </activity>
 
         <activity
-                android:name=".bookmarks.UserLoginFragment"
+                android:name=".bookmarks.LoginActivity"
                 android:theme="@style/AppTheme.NoActionBar">
 
         </activity>

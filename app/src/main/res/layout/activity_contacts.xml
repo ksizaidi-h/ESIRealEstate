@@ -32,15 +32,6 @@
 <!--                android:text="@string/retry"/>-->
     </LinearLayout>
 
-    <ProgressBar
-            android:id="@+id/pb_waiting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:layout_constraintBottom_toBottomOf="@+id/rv_home"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/rv_home"
-            app:layout_constraintTop_toTopOf="parent" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -52,7 +43,7 @@
             android:layout_margin="16dp"
             android:contentDescription="@string/send"
             android:src="@drawable/ic_send_black_24dp"
-            app:backgroundTint="@color/btn_send_color" />
+            app:backgroundTint="#2196F3" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

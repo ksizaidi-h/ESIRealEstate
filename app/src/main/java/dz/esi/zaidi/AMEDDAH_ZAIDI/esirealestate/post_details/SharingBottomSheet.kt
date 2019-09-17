@@ -60,12 +60,12 @@ class SharingBottomSheet(val link : String) : BottomSheetDialogFragment() {
         sharingViewModel = ViewModelProviders.of(this).get(SharingPostViewModel::class.java)
         view?.btn_message?.setOnClickListener {
             sendSms()
-            //this.dismiss()
+            this.dismiss()
         }
 
         view?.btn_email?.setOnClickListener {
             sendEmails()
-            //this.dismiss()
+            this.dismiss()
 
         }
 

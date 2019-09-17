@@ -4,8 +4,11 @@ import android.app.Application
 import android.content.res.TypedArray
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.Utils
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.contacts.mail_senders.IMailSender
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.contacts.sms_senders.ISmsSender
 import java.util.*
@@ -20,6 +23,11 @@ class ContactsViewModel(application: Application) : AndroidViewModel(application
 
     lateinit var smsSender : ISmsSender
     lateinit var mailSender : IMailSender
+    val isListEmpty : LiveData<Boolean> = MutableLiveData()
+    val isOnline : LiveData<Boolean> = MutableLiveData()
+
+    private val connectionState = isOnline as MutableLiveData
+    private val listState = isListEmpty as MutableLiveData
 
     companion object{
         private const val TAG = "ContactsViewModel"
@@ -29,14 +37,21 @@ class ContactsViewModel(application: Application) : AndroidViewModel(application
     init {
         val resolver = ContactsResolver(context)
         contacts = HashSet(resolver.getContacts())
+        (isListEmpty as MutableLiveData).value = true
     }
 
     fun addContactToChosen(contact: Contact){
         chosenContacts.add(contact)
+        if (chosenContacts.isNotEmpty()){
+            listState.value = false
+        }
     }
 
     fun removeContactFromChosen(contact: Contact){
         chosenContacts.remove(contact)
+        if (chosenContacts.isEmpty()){
+            listState.value = true
+        }
     }
 
     fun getCurrentChosen() : List<Contact>{
@@ -44,9 +59,13 @@ class ContactsViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun sendEmails(link : String){
-        val emails = chosenContacts.map { it.email!! }.toList()
-        mailSender.sendEmails(emails, context.getString(R.string.message_body, link))
-        Log.i(TAG,"sendEmails $emails")
+        connectionState.postValue(Utils.isInternetAvailable(context))
+        if(connectionState.value == true){
+            val emails = chosenContacts.map { it.email!! }.toList()
+            mailSender.sendEmails(emails, context.getString(R.string.message_body, link))
+            Log.i(TAG,"sendEmails $emails")
+
+        }
     }
 //
 //    fun sendMessages(){

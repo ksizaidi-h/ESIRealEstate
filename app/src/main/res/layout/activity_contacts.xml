@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -10,31 +10,49 @@
             android:id="@+id/rv_contacts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
     <LinearLayout
-            android:id="@+id/btn_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/offline_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone"
             android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="@id/rv_contacts"
-            app:layout_constraintEnd_toEndOf="@id/rv_contacts"
-            app:layout_constraintBottom_toBottomOf="@id/rv_contacts"
-            android:background="@color/fui_transparent">
+            >
         <TextView
+                android:id="@+id/offline_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/fui_transparent"
-                android:text="@string/send"/>
-
-        <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_send_black_24dp"
-                android:contentDescription="@string/send"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:background="@color/fui_transparent"/>
-
+                style="@style/EmptyList"
+                android:text="@string/btn_retry_txt"/>
+<!--        <Button-->
+<!--                android:id="@+id/btn_offline_retry"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/retry"/>-->
     </LinearLayout>
 
+    <ProgressBar
+            android:id="@+id/pb_waiting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/rv_home"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/rv_home"
+            app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_send"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/send"
+            android:src="@drawable/ic_send_black_24dp"
+            app:backgroundTint="@color/btn_send_color" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,18 +1,11 @@
 package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.contacts.mail_senders
 
-import android.accounts.Account
-import android.accounts.AccountManager
-import android.app.Activity
-import android.app.Application
 import android.content.Context
 import android.util.Log
-import com.firebase.ui.auth.AuthUI.getApplicationContext
-import com.google.android.gms.auth.GoogleAuthUtil
-import com.google.android.gms.auth.UserRecoverableAuthException
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.api.client.extensions.android.http.AndroidHttp
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
-import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
 import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.client.util.Base64
 import com.google.api.client.util.ExponentialBackOff
@@ -23,26 +16,21 @@ import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.User
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.excptions.NotConnectedException
 import java.io.IOException
-import retrofit2.http.Multipart
 import java.io.ByteArrayOutputStream
 import java.util.*
 import javax.mail.MessagingException
 import javax.mail.Session
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
-import com.google.api.client.googleapis.util.Utils
-import com.squareup.okhttp.*
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.SharingBottomSheet
-import org.jetbrains.anko.doAsync
-import java.lang.Exception
 
 
-class GmailClientMailSender(val context : Context) : IMailSender {
+class GmailClientMailSender(val context: Context) : IMailSender {
 
-    companion object{
+
+    companion object {
         private const val TAG = "GmailClientMailSender"
         val SCOPES = arrayOf(
-           // GmailScopes.GMAIL_LABELS,
+            // GmailScopes.GMAIL_LABELS,
             GmailScopes.GMAIL_COMPOSE
 //            GmailScopes.GMAIL_INSERT,
 //            GmailScopes.GMAIL_MODIFY,
@@ -51,10 +39,13 @@ class GmailClientMailSender(val context : Context) : IMailSender {
         )
     }
 
+
+    private val isSending = MutableLiveData<Boolean>()
+    override fun getSendingState(): LiveData<Boolean> = isSending
+
     val mCredential = GoogleAccountCredential.usingOAuth2(
         context, listOf(*SCOPES)
     ).setBackOff(ExponentialBackOff())
-
 
 
     // Method to send email
@@ -62,7 +53,7 @@ class GmailClientMailSender(val context : Context) : IMailSender {
     private fun sendMessage(service: Gmail, userId: String, email: MimeMessage): String {
         var message = createMessageWithEmail(email)
         // GMail's official method to send email with oauth2.0
-            message = service.users().messages().send(userId, message).execute()
+        message = service.users().messages().send(userId, message).execute()
         return message.getId()
     }
 
@@ -86,7 +77,7 @@ class GmailClientMailSender(val context : Context) : IMailSender {
 
         // Changed for adding attachment and text
         // This line is used for sending only text messages through mail
-         email.setText(bodyText);
+        email.setText(bodyText);
 
         return email
     }
@@ -103,27 +94,33 @@ class GmailClientMailSender(val context : Context) : IMailSender {
 
     @Throws(NotConnectedException::class)
     override fun sendEmails(emails: List<String>, message: String) {
-        if(!User.isLoggedIn){
+        if (!User.isLoggedIn) {
             throw NotConnectedException(context)
-        }else{
-                val senderEmail= "me"
-                mCredential.setSelectedAccountName(User.email)
-                val service = Gmail.Builder(
-                    AndroidHttp.newCompatibleTransport(),
-                    JacksonFactory.getDefaultInstance(),
-                    mCredential
-                    )
-                    .setApplicationName(context.resources.getString(R.string.app_name))
-                    .build()
-                    for (mailTo in emails){
-                        val email = createEmail(mailTo,senderEmail,context.getString(R.string.mail_subject), message)
-                        val response = sendMessage(service,senderEmail,email)
-                        Log.d(TAG,"response : $response")
-
-                }
+        } else {
+            val senderEmail = "me"
+            mCredential.setSelectedAccountName(User.email)
+            val service = Gmail.Builder(
+                AndroidHttp.newCompatibleTransport(),
+                JacksonFactory.getDefaultInstance(),
+                mCredential
+            )
+                .setApplicationName(context.resources.getString(R.string.app_name))
+                .build()
+            isSending.postValue(true)
+            for (i in 0..15) {
+                val email = createEmail(
+                    "hamza.kmsi@gmail.com",
+                    senderEmail,
+                    context.getString(R.string.mail_subject),
+                    message
+                )
+                val response = sendMessage(service, senderEmail, email)
+                Log.d(TAG, "response : $response")
 
             }
+            isSending.postValue(false)
         }
+    }
 }
 
 

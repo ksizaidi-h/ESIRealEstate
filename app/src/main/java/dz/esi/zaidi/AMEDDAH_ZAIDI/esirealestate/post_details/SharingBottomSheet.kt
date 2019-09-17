@@ -15,12 +15,21 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAuthIOException
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
+import com.google.api.client.util.ExponentialBackOff
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.User
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.contacts.ContactsChoose
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.contacts.mail_senders.GmailClientMailSender
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.contacts.sms_senders.DefaultSmsSender
 import kotlinx.android.synthetic.main.share_dialog.view.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
+import java.lang.Exception
 
 class SharingBottomSheet(val link : String) : BottomSheetDialogFragment() {
 
@@ -28,10 +37,15 @@ class SharingBottomSheet(val link : String) : BottomSheetDialogFragment() {
         const val SEND_MESSAGES_REQUEST_CODE = 0
         const val SEND_EMAILS_REQUEST_CODE = 1
         private const val READ_CONTACTS_AND_SEND_SMS = 50
+        private const val READ_CONTACTS_AND_GET_ACCOUNTS = 51
+        private const val REQUEST_ACCOUNT_PICKER  = 5
+        const val GRANT_SEND_PERMISSION_CODE = 200
         private const val TAG = "SharingBottomSheet"
     }
 
     private lateinit var sharingViewModel: SharingPostViewModel
+    private lateinit var mCredential: GoogleAccountCredential
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,7 +58,6 @@ class SharingBottomSheet(val link : String) : BottomSheetDialogFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         sharingViewModel = ViewModelProviders.of(this).get(SharingPostViewModel::class.java)
-
         view?.btn_message?.setOnClickListener {
             sendSms()
             //this.dismiss()
@@ -75,8 +88,20 @@ class SharingBottomSheet(val link : String) : BottomSheetDialogFragment() {
         }
     }
 
+    @AfterPermissionGranted(READ_CONTACTS_AND_GET_ACCOUNTS)
     private fun sendEmails(){
-        chooseContacts(SEND_EMAILS_REQUEST_CODE)
+        val perms = arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.GET_ACCOUNTS, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if(EasyPermissions.hasPermissions(activity!!, *perms)){
+            Log.d(TAG,"sendEmails")
+            chooseContacts(SEND_EMAILS_REQUEST_CODE)
+        }else{
+            EasyPermissions.requestPermissions(
+                PermissionRequest.Builder(activity!!, READ_CONTACTS_AND_GET_ACCOUNTS ,*perms)
+                    .setRationale(R.string.sms_rational)
+                    .setPositiveButtonText(R.string.allow)
+                    .setNegativeButtonText(R.string.deny)
+                    .build())
+        }
     }
 
 
@@ -85,28 +110,13 @@ class SharingBottomSheet(val link : String) : BottomSheetDialogFragment() {
         EasyPermissions.onRequestPermissionsResult(requestCode,permissions,grantResults,activity)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.d(TAG,"onActivityResult : $resultCode")
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK){
-            val chosenContacts = data?.getStringArrayExtra(ContactsChoose.CHOSEN_CONTACTS_EXTRA)
-            if (requestCode == SEND_EMAILS_REQUEST_CODE){
-                sharingViewModel.sendEmails(chosenContacts!!.toList(), getString(R.string.message_body,link))
-            }else {
-                sharingViewModel.sendMessages(chosenContacts!!.toList(),getString(R.string.message_body,link))
-            }
-            this.dismiss()
-        }
-
-    }
-
     fun chooseContacts(requestCode : Int){
         val intent = if(requestCode == SEND_EMAILS_REQUEST_CODE) {
-            ContactsChoose.getIntent(activity!!,true)
+            ContactsChoose.getIntent(activity!!,true,link)
         }else{
-            ContactsChoose.getIntent(activity!!,false)
+            ContactsChoose.getIntent(activity!!,false,link)
         }
-        startActivityForResult(intent, requestCode)
+        startActivity(intent)
     }
 
 

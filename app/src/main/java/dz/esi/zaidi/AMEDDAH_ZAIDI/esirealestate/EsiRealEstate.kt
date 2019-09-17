@@ -9,6 +9,7 @@ import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service.WilayaSubsc
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.util.Log
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks.UserLoginFragment
@@ -39,15 +40,17 @@ class EsiRealEstate : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        FirebaseApp.initializeApp(applicationContext)
 
-        var auth = FirebaseAuth.getInstance()
-        var db = FirebaseFirestore.getInstance()
+        val auth = FirebaseAuth.getInstance()
+        val db = FirebaseFirestore.getInstance()
 
-        if (auth.uid!!.toString() != "null"){
+        if (auth.uid.toString() != "null"){
             User.isLoggedIn=true
             db.collection("users").document(auth!!.uid!!).get()
                 .addOnSuccessListener{ task ->
                     User.links =  if(task.get("bookmarks") == null) ArrayList<String>() else task.get("bookmarks" ) as ArrayList<String>
+                    User.email = auth!!.currentUser!!.email.toString()
 
                 }
                 .addOnFailureListener { e ->

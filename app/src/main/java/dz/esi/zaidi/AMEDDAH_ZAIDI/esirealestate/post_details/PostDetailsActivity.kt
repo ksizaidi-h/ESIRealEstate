@@ -103,4 +103,6 @@ class PostDetailsActivity : AppCompatActivity() {
 
         postsDetailsViewModel.newInstanceCurrentPost = post
     }
+
+
 }

@@ -1,13 +1,27 @@
 package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.contacts.mail_senders
 
+import android.accounts.Account
+import android.accounts.AccountManager
+import android.app.Activity
 import android.app.Application
+import android.content.Context
+import android.util.Log
 import com.firebase.ui.auth.AuthUI.getApplicationContext
+import com.google.android.gms.auth.GoogleAuthUtil
+import com.google.android.gms.auth.UserRecoverableAuthException
+import com.google.api.client.extensions.android.http.AndroidHttp
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
+import com.google.api.client.json.jackson2.JacksonFactory
 import com.google.api.client.util.Base64
 import com.google.api.client.util.ExponentialBackOff
 import com.google.api.services.gmail.GmailScopes
 import com.google.api.services.gmail.Gmail
 import com.google.api.services.gmail.model.Message
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.User
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.excptions.NotConnectedException
 import java.io.IOException
 import retrofit2.http.Multipart
 import java.io.ByteArrayOutputStream
@@ -16,33 +30,39 @@ import javax.mail.MessagingException
 import javax.mail.Session
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
+import com.google.api.client.googleapis.util.Utils
+import com.squareup.okhttp.*
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.SharingBottomSheet
+import org.jetbrains.anko.doAsync
+import java.lang.Exception
 
 
-class GmailClientMailSender(application: Application) : IMailSender {
-    val context = application.applicationContext
+class GmailClientMailSender(val context : Context) : IMailSender {
 
     companion object{
-        private val SCOPES = arrayOf(
-            GmailScopes.GMAIL_LABELS,
-            GmailScopes.GMAIL_COMPOSE,
-            GmailScopes.GMAIL_INSERT,
-            GmailScopes.GMAIL_MODIFY,
-            GmailScopes.GMAIL_READONLY,
-            GmailScopes.MAIL_GOOGLE_COM
+        private const val TAG = "GmailClientMailSender"
+        val SCOPES = arrayOf(
+           // GmailScopes.GMAIL_LABELS,
+            GmailScopes.GMAIL_COMPOSE
+//            GmailScopes.GMAIL_INSERT,
+//            GmailScopes.GMAIL_MODIFY,
+//            GmailScopes.GMAIL_READONLY,
+//            GmailScopes.MAIL_GOOGLE_COM
         )
     }
 
     val mCredential = GoogleAccountCredential.usingOAuth2(
-    context, listOf(*SCOPES)
-    )
-    .setBackOff(ExponentialBackOff())
+        context, listOf(*SCOPES)
+    ).setBackOff(ExponentialBackOff())
+
+
 
     // Method to send email
     @Throws(MessagingException::class, IOException::class)
     private fun sendMessage(service: Gmail, userId: String, email: MimeMessage): String {
         var message = createMessageWithEmail(email)
         // GMail's official method to send email with oauth2.0
-        message = service.users().messages().send(userId, message).execute()
+            message = service.users().messages().send(userId, message).execute()
         return message.getId()
     }
 
@@ -81,6 +101,29 @@ class GmailClientMailSender(application: Application) : IMailSender {
         return message
     }
 
+    @Throws(NotConnectedException::class)
     override fun sendEmails(emails: List<String>, message: String) {
-    }
+        if(!User.isLoggedIn){
+            throw NotConnectedException(context)
+        }else{
+                val senderEmail= "me"
+                mCredential.setSelectedAccountName(User.email)
+                val service = Gmail.Builder(
+                    AndroidHttp.newCompatibleTransport(),
+                    JacksonFactory.getDefaultInstance(),
+                    mCredential
+                    )
+                    .setApplicationName(context.resources.getString(R.string.app_name))
+                    .build()
+                    for (mailTo in emails){
+                        val email = createEmail(mailTo,senderEmail,context.getString(R.string.mail_subject), message)
+                        val response = sendMessage(service,senderEmail,email)
+                        Log.d(TAG,"response : $response")
+
+                }
+
+            }
+        }
 }
+
+

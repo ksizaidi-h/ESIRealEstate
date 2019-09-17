@@ -39,23 +39,8 @@ class EsiRealEstate : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        FirebaseApp.initializeApp(applicationContext)
 
-        val auth = FirebaseAuth.getInstance()
-        val db = FirebaseFirestore.getInstance()
 
-        if (auth.uid.toString() != "null"){
-            User.isLoggedIn=true
-            db.collection("users").document(auth!!.uid!!).get()
-                .addOnSuccessListener{ task ->
-                    User.links =  if(task.get("bookmarks") == null) ArrayList<String>() else task.get("bookmarks" ) as ArrayList<String>
-                    User.email = auth!!.currentUser!!.email.toString()
-
-                }
-                .addOnFailureListener { e ->
-                    Log.d("Error adding document", "error")
-                }
-        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel(

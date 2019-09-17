@@ -13,6 +13,8 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks.BookMarksViewModel
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks.BookmarksFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks.LoginActivity
@@ -49,6 +51,23 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        val auth = FirebaseAuth.getInstance()
+        val db = FirebaseFirestore.getInstance()
+
+        if (auth.uid.toString() != "null"){
+            User.isLoggedIn=true
+            db.collection("users").document(auth!!.uid!!).get()
+                .addOnSuccessListener{ task ->
+                    User.links =  if(task.get("bookmarks") == null) ArrayList<String>() else task.get("bookmarks" ) as ArrayList<String>
+                    User.email = auth!!.currentUser!!.email.toString()
+
+                }
+                .addOnFailureListener { e ->
+                    Log.d("Error adding document", "error")
+                }
+        }
 
         postsListViewModel = ViewModelProviders.of(this).get(PostsListViewModel::class.java)
         favoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel::class.java)
@@ -213,6 +232,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (requestCode == LOGIN_REQUEST) {
             if (resultCode == Activity.RESULT_OK){
+                bookMarksViewModel.getBookMarkedPosts()
                 showFragment(BookmarksFragment())
             }
         }

@@ -1,4 +1,5 @@
 package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -168,6 +169,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             db.collection("users").document(auth!!.uid!!).get()
                 .addOnSuccessListener{ task ->
                    User.links =  if(task.get("bookmarks") == null) ArrayList<String>() else task.get("bookmarks" ) as ArrayList<String>
+                    setResult(Activity.RESULT_OK)
+                    finish()
 
                 }
                 .addOnFailureListener { e ->

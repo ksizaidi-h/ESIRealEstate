@@ -39,6 +39,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R.string.default_web_client_id))
             .requestEmail()
+            .requestProfile()
             .build()
         // [END config_signin
 
@@ -73,7 +74,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
-                User.googleAccount = account!!
                 firebaseAuthWithGoogle(account!!)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
@@ -91,17 +91,21 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.id!!)
 
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        auth!!.signInWithCredential(credential)
+        auth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
 
-                    val userId = auth!!.uid
-                    val email = auth!!.currentUser!!.email
+                    val userId = auth.uid
+                    val email = auth.currentUser!!.email
+                    val name = auth.currentUser!!.displayName
+                    val photo = auth.currentUser!!.photoUrl
 
                     User.email = email!!
                     User.isLoggedIn = true
+                    User.name = name.toString()
+                    User.urlPhoto = photo
 
                     db.collection("users").document(userId!!)
                         .get()
@@ -169,6 +173,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             db.collection("users").document(auth!!.uid!!).get()
                 .addOnSuccessListener{ task ->
                    User.links =  if(task.get("bookmarks") == null) ArrayList<String>() else task.get("bookmarks" ) as ArrayList<String>
+                    User.email = auth.currentUser?.email.toString()
                     setResult(Activity.RESULT_OK)
                     finish()
 

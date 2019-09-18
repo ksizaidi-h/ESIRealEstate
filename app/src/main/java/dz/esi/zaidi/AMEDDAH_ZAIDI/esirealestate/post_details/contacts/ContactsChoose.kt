@@ -55,19 +55,6 @@ class ContactsChoose : AppCompatActivity() {
 
         contactsViewModel = ViewModelProviders.of(this).get(ContactsViewModel::class.java)
         contactsViewModel.mailSender = GmailClientMailSender(this)
-        contactsViewModel.smsSender = DefaultSmsSender()
-        rv_contacts.layoutManager = LinearLayoutManager(this)
-        rv_contacts.setHasFixedSize(true)
-        adapter.chosenContacts = HashSet(contactsViewModel.getCurrentChosen())
-        rv_contacts.adapter = adapter
-
-        var contacts = contactsViewModel.contacts.toList()
-        if (intent.hasExtra(EMAILS_ONLY)) {
-            if (intent.getBooleanExtra(EMAILS_ONLY, false)) {
-                forEmails = true
-                contacts = contacts.filter { it.email != null }
-            }
-        }
         contactsViewModel.mailSender.getSendingState().observe(this, Observer {
             val dialog = AlertDialog.Builder(this)
                 .setView(R.layout.sending_mails_progress_par)
@@ -84,34 +71,68 @@ class ContactsChoose : AppCompatActivity() {
             }
         })
 
-        adapter.submitList(contacts)
-        adapter.onAddButtonClickListener = onAddButtonClickListener
-        link = intent.getStringExtra(LINK_EXTRA)!!
-        btn_send.setOnClickListener {
-            if (forEmails){
-                sendEmails()
-            }else{
-                sendTextMessages()
-            }
 
-        }
+        contactsViewModel.smsSender = DefaultSmsSender()
+        contactsViewModel.smsSender.getSendingState().observe(this, Observer {
+            val dialog = AlertDialog.Builder(this)
+                .setView(R.layout.sending_mails_progress_par)
+            if (it) {
+                dialog.show()
 
-        contactsViewModel.isOnline.observe(this, Observer {
-            if (!it) {
-                offline_layout.visibility = View.VISIBLE
-                rv_contacts.visibility = View.GONE
             } else {
-                rv_contacts.visibility = View.VISIBLE
-                offline_layout.visibility = View.GONE
+                Toast.makeText(
+                    this,
+                    "Touts les emails ont été envoyés avec succes",
+                    Toast.LENGTH_SHORT
+                ).show()
+                finish()
             }
         })
-        btn_send.isEnabled = false
+
+
+        contactsViewModel.isOnline.observe(this, Observer {
+            if(!it){
+                offline_layout.visibility = View.VISIBLE
+                rv_contacts.visibility = View.GONE
+            }else{
+                offline_layout.visibility = View.GONE
+                rv_contacts.visibility = View.VISIBLE
+            }
+        })
+
 
         contactsViewModel.isListEmpty.observe(this, Observer {
             btn_send.isEnabled = !it
             // btn_send.backgroundTintList = if(it) ColorStateList.valueOf(2035) else ColorStateList.valueOf(2035)
             //Todo change color at runtime
         })
+
+        rv_contacts.layoutManager = LinearLayoutManager(this)
+        rv_contacts.setHasFixedSize(true)
+        adapter.chosenContacts = HashSet(contactsViewModel.getCurrentChosen())
+        rv_contacts.adapter = adapter
+
+        var contacts = contactsViewModel.contacts.toList()
+        if (intent.hasExtra(EMAILS_ONLY)) {
+            if (intent.getBooleanExtra(EMAILS_ONLY, false)) {
+                forEmails = true
+                contacts = contacts.filter { it.email != null }
+            }
+        }
+        adapter.submitList(contacts)
+        adapter.onAddButtonClickListener = onAddButtonClickListener
+        link = intent.getStringExtra(LINK_EXTRA)!!
+        btn_send.setOnClickListener {
+            if (forEmails) {
+                sendEmails()
+            } else {
+                sendTextMessages()
+            }
+
+        }
+
+        btn_send.isEnabled = false
+
 
     }
 
@@ -137,7 +158,7 @@ class ContactsChoose : AppCompatActivity() {
         }
     }
 
-    private fun sendEmails(){
+    private fun sendEmails() {
         doAsync {
             try {
                 contactsViewModel.sendEmails(link)
@@ -161,10 +182,9 @@ class ContactsChoose : AppCompatActivity() {
         }
     }
 
-    private fun sendTextMessages(){
+    private fun sendTextMessages() {
         doAsync {
             contactsViewModel.sendMessages(link)
         }
     }
-
 }

@@ -19,4 +19,8 @@ class BookMarksViewModel(application: Application) : AndroidViewModel(applicatio
     fun getBookMarkedPosts(){
         bookmarksRepository.getBookmarkedPosts()
     }
+
+    fun refreshBookMarks(){
+        bookmarksRepository.refreshBookmarks()
+    }
 }

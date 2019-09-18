@@ -38,6 +38,8 @@ class ContactsViewModel(application: Application) : AndroidViewModel(application
         val resolver = ContactsResolver(context)
         contacts = HashSet(resolver.getContacts())
         (isListEmpty as MutableLiveData).value = true
+        connectionState.value = true
+        listState.value = true
     }
 
     fun addContactToChosen(contact: Contact){

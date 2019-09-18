@@ -15,11 +15,14 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.squareup.picasso.Picasso
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks.BookMarksViewModel
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks.BookmarksFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks.LoginActivity
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.*
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service.WilayaSubscriptionFragment
+import kotlinx.android.synthetic.main.nav_header.*
+import kotlinx.android.synthetic.main.nav_header.view.*
 
 //import java.util.*
 
@@ -46,28 +49,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         private const val RENT_CATEGORY = "Location"
         private const val HOLIDAY_CATEGORY = "Location vacance"
         private const val LOGIN_REQUEST = 78
+
+        private const val TAG = "MainActivity : header"
     }
+
+    private val categoriesMap = hashMapOf( SELL to SELL_CATEGORY, RENT to RENT_CATEGORY, HOLIDAY to HOLIDAY_CATEGORY )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
-        val auth = FirebaseAuth.getInstance()
-        val db = FirebaseFirestore.getInstance()
-
-        if (auth.uid.toString() != "null"){
-            User.isLoggedIn=true
-            db.collection("users").document(auth!!.uid!!).get()
-                .addOnSuccessListener{ task ->
-                    User.links =  if(task.get("bookmarks") == null) ArrayList<String>() else task.get("bookmarks" ) as ArrayList<String>
-                    User.email = auth!!.currentUser!!.email.toString()
-
-                }
-                .addOnFailureListener { e ->
-                    Log.d("Error adding document", "error")
-                }
-        }
 
         postsListViewModel = ViewModelProviders.of(this).get(PostsListViewModel::class.java)
         favoritesViewModel = ViewModelProviders.of(this).get(FavoritesViewModel::class.java)
@@ -101,7 +93,44 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             navigationView.setCheckedItem(R.id.nav_home)
             supportActionBar?.title = getString(R.string.home)
         }
+
+
     }
+
+    override fun onResume() {
+        val auth = FirebaseAuth.getInstance()
+        val db = FirebaseFirestore.getInstance()
+
+        val navigationHeader = navigationView.getHeaderView(0)
+        if (auth.uid.toString() != "null"){
+            User.isLoggedIn  =true
+            db.collection("users").document(auth.uid!!).get()
+                .addOnSuccessListener{ task ->
+                    User.links =  if(task.get("bookmarks") == null) ArrayList<String>() else task.get("bookmarks" ) as ArrayList<String>
+                    val email = auth.currentUser!!.email
+                    val name = auth.currentUser!!.displayName
+                    val photo = auth.currentUser!!.photoUrl
+
+                    User.email = email!!
+                    User.isLoggedIn = true
+                    User.name = name.toString()
+                    User.urlPhoto = photo
+
+                    navigationHeader.tv_user_email.text = User.email
+                    navigationHeader.tv_user_name.text = User.name
+
+                    Picasso.get().load(User.urlPhoto) to navigationHeader.iv_user_photo
+
+                }
+                .addOnFailureListener { e ->
+                    Log.d("Error adding document", "error")
+                }
+        }
+        favoritesViewModel.updateFavorites()
+       // bookMarksViewModel.refreshBookMarks()
+        super.onResume()
+    }
+
 
 
     private fun showView(view: String) {

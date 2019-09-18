@@ -45,11 +45,23 @@ class BookmarksRepository(val application: Application) : RealEstatePostsConsume
                 }
             }else{
                 posts.value = postsCache
-                if (postsCache.isNotEmpty()){
+                if (!postsCache.isEmpty()){
                     isLoading.value = false
                 }
 
             }
+        }
+    }
+
+    fun refreshBookmarks(){
+        isOnline.value = Utils.isInternetAvailable(context)
+        if (isOnline.value == true){
+            isLoading.value = true
+                posts.value = ArrayList<RealEstatePost>()
+                for(site in bookmarkSources){
+                    site.getBookmarkedPosts(this)
+                }
+            isLoading.value = false
         }
     }
 }

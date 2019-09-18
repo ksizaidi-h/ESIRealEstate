@@ -24,4 +24,11 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
         realEstatePostsRepository.getPostsByCategory(category)
     }
 
+    fun updateFavorites(){
+        if (currentCategory.value != null){
+            realEstatePostsRepository.getPostsByCategory(currentCategory.value!!)
+        }
+
+    }
+
 }

@@ -1,4 +1,4 @@
-package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate
+package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.users
 
 import android.accounts.Account
 import android.net.Uri

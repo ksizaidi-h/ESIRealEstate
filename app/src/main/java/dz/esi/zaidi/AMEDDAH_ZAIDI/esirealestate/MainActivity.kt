@@ -21,7 +21,8 @@ import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks.BookmarksFragment
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.bookmarks.LoginActivity
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.home.*
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.subscription_service.WilayaSubscriptionFragment
-import kotlinx.android.synthetic.main.nav_header.*
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.users.ProfileFragment
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.users.User
 import kotlinx.android.synthetic.main.nav_header.view.*
 
 //import java.util.*
@@ -48,12 +49,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         private const val SELL_CATEGORY = "Vente"
         private const val RENT_CATEGORY = "Location"
         private const val HOLIDAY_CATEGORY = "Location vacance"
-        private const val LOGIN_REQUEST = 78
+        const val PROFILE_REQUEST = 78
+        const val BOOKMARK_REQUEST = 97
 
         private const val TAG = "MainActivity : header"
     }
 
-    private val categoriesMap = hashMapOf( SELL to SELL_CATEGORY, RENT to RENT_CATEGORY, HOLIDAY to HOLIDAY_CATEGORY )
+    private val categoriesMap =
+        hashMapOf(SELL to SELL_CATEGORY, RENT to RENT_CATEGORY, HOLIDAY to HOLIDAY_CATEGORY)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,11 +105,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val db = FirebaseFirestore.getInstance()
 
         val navigationHeader = navigationView.getHeaderView(0)
-        if (auth.uid.toString() != "null"){
-            User.isLoggedIn  =true
+        if (auth.uid.toString() != "null") {
+            User.isLoggedIn = true
             db.collection("users").document(auth.uid!!).get()
-                .addOnSuccessListener{ task ->
-                    User.links =  if(task.get("bookmarks") == null) ArrayList<String>() else task.get("bookmarks" ) as ArrayList<String>
+                .addOnSuccessListener { task ->
+                    User.links =
+                        if (task.get("bookmarks") == null) ArrayList<String>() else task.get("bookmarks") as ArrayList<String>
                     val email = auth.currentUser!!.email
                     val name = auth.currentUser!!.displayName
                     val photo = auth.currentUser!!.photoUrl
@@ -127,10 +131,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
         }
         favoritesViewModel.updateFavorites()
-       // bookMarksViewModel.refreshBookMarks()
+        // bookMarksViewModel.refreshBookMarks()
         super.onResume()
     }
-
 
 
     private fun showView(view: String) {
@@ -215,12 +218,28 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     changeCurrentView(BOOKMARK)
                 } else {
                     val intent = Intent(this, LoginActivity::class.java)
-                    startActivityForResult(intent, LOGIN_REQUEST)
+                    startActivityForResult(intent, BOOKMARK_REQUEST)
                 }
+            }
+
+            R.id.nav_profile -> {
+                if (User.isLoggedIn) {
+                    if (viewStack.isEmpty()) viewStack.push(HOME)
+                    showFragment(ProfileFragment())
+                    navigationView.setCheckedItem(item.itemId)
+                    supportActionBar?.title = getString(R.string.profile)
+                } else {
+
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivityForResult(intent, MainActivity.PROFILE_REQUEST)
+
+                }
+
             }
 
         }
         Log.d("viewStack", viewStack.toString())
+        Log.d(TAG,"currentView : $currentView")
         navigationView.setCheckedItem(item.itemId)
         drawer.closeDrawer(GravityCompat.START)
         return true
@@ -238,6 +257,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
+        Log.d(TAG,"backButtonPressed")
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START)
         } else if ((viewStack.isEmpty())) {
@@ -259,11 +279,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == LOGIN_REQUEST) {
-            if (resultCode == Activity.RESULT_OK){
-                bookMarksViewModel.getBookMarkedPosts()
-                showFragment(BookmarksFragment())
+        if (resultCode == Activity.RESULT_OK){
+            when (requestCode){
+                PROFILE_REQUEST -> {
+                    if (viewStack.isEmpty()) viewStack.push(HOME)
+                    showFragment(ProfileFragment())
+                    navigationView.setCheckedItem(R.id.nav_profile)
+                    supportActionBar?.title = getString(R.string.profile)
+                }
+
+                BOOKMARK_REQUEST ->{
+                    showView(BOOKMARK)
+                }
             }
+        }else{
+            showView(HOME)
         }
 
     }

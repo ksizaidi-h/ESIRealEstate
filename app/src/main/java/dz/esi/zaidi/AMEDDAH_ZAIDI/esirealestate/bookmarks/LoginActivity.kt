@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.user.*
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.User
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.users.User
 
 
 

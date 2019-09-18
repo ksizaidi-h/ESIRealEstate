@@ -3,7 +3,7 @@ package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data_sources
 
 import android.content.Context
 import android.util.Log
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.User
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.users.User
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.Localisation
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePost
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePoster
@@ -12,7 +12,6 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
 
 class AlgerieAnnonceWebsite : RealEstateWebSite, NewPostsNotificationProvider, BookmarkedRealEstatePostsProvider {
 

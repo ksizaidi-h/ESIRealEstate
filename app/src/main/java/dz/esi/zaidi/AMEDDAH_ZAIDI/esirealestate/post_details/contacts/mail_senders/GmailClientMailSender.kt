@@ -14,7 +14,7 @@ import com.google.api.services.gmail.GmailScopes
 import com.google.api.services.gmail.Gmail
 import com.google.api.services.gmail.model.Message
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.User
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.users.User
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.excptions.NotConnectedException
 import java.io.IOException
 import java.io.ByteArrayOutputStream

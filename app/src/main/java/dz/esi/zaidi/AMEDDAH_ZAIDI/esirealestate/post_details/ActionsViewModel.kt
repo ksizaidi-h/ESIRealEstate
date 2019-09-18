@@ -1,16 +1,12 @@
 package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details
 
 import android.app.Application
-import android.content.Intent
-import android.provider.SyncStateContract.Helpers.update
 import android.util.Log
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.AndroidViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.User
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.users.User
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePost
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.data.RealEstatePostsRepository
 

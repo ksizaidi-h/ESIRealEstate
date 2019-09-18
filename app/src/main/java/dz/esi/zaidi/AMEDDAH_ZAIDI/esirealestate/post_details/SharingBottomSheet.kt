@@ -1,35 +1,20 @@
 package dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details
 
 import android.Manifest
-import android.app.Activity
-import android.content.DialogInterface
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAuthIOException
-import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException
-import com.google.api.client.util.ExponentialBackOff
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.User
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.contacts.ContactsChoose
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.contacts.mail_senders.GmailClientMailSender
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.post_details.contacts.sms_senders.DefaultSmsSender
 import kotlinx.android.synthetic.main.share_dialog.view.*
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
-import java.lang.Exception
 
 class SharingBottomSheet(val link : String) : BottomSheetDialogFragment() {
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -9,21 +9,27 @@
             android:id="@+id/btn_favorites"
             android:layout_width="@dimen/action_button_size"
             android:layout_height="@dimen/action_button_size"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:background="@drawable/favorite_toggle_selector"
             android:textOff=""
-            android:textOn="" />
+            android:textOn=""
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_1"/>
 
     <ImageButton
             android:id="@+id/btn_visit_link"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="@dimen/action_button_size"
             android:layout_height="@dimen/action_button_size"
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
             android:contentDescription="@string/open_in_browser"
-            android:src="@drawable/ic_open_in_browser_black_24dp" />
+            android:src="@drawable/ic_open_in_browser_black_24dp"
+            app:layout_constraintStart_toEndOf="@+id/guideline_1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline_2"/>
+
     <ImageButton
             android:id="@+id/btn_share_post"
             style="@style/Widget.AppCompat.Button.Borderless"
@@ -32,7 +38,11 @@
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
             android:contentDescription="@string/open_in_browser"
-            android:src="@drawable/ic_share_black_24dp" />
+            android:src="@drawable/ic_share_black_24dp"
+            app:layout_constraintStart_toEndOf="@+id/guideline_2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline_3"
+            />
 
     <ToggleButton
             android:id="@+id/btn_bookmark"
@@ -42,6 +52,32 @@
             android:layout_marginRight="20dp"
             android:background="@drawable/toggle_bookmark_selector"
             android:textOff=""
-            android:textOn="" />
+            android:textOn=""
+            app:layout_constraintStart_toEndOf="@+id/guideline_3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
 
-</LinearLayout>
+            />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.24" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.74" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

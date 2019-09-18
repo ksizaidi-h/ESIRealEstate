@@ -10,8 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.R
-import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.User
-import kotlinx.android.synthetic.main.actions_fragment.*
+import dz.esi.zaidi.AMEDDAH_ZAIDI.esirealestate.users.User
 import kotlinx.android.synthetic.main.actions_fragment.view.*
 
 class ActionsFragment : Fragment() {

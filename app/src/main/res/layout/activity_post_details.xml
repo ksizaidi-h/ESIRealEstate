@@ -13,8 +13,8 @@
                 android:layout_height="@dimen/real_estate_picture_height"/>
         <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp">
+                android:layout_height="match_parent"
+                android:layout_marginBottom="40dp">
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
         </ScrollView>
 
         <FrameLayout
-                android:layout_marginTop="-30dp"
+                android:layout_marginTop="-40dp"
                 android:id="@+id/actions_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
